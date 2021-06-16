@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhj.shop.repository.OrderRepository">
+
+    <resultMap id="BaseResultMap" type="com.hhj.shop.entity.Order">
+        <id column="id" jdbcType="VARCHAR" property="Oid"/>
+        <result column="member_id" jdbcType="INTEGER" property="memberId"/>
+        <result column="ad_id" jdbcType="INTEGER" property="adId"/>
+        <result column="order_status" jdbcType="INTEGER" property="orderStatus"/>
+        <result column="createtime" jdbcType="VARCHAR" property="createtime"/>
+        <result column="a_id" jdbcType="INTEGER" property="aId"/>
+        <result column="order_settlement_time" jdbcType="VARCHAR" property="orderSettlementTime"/>
+        <result column="good_amount_total" jdbcType="DECIMAL" property="goodAmountTotal"/>
+        <collection property="orderGList" ofType="com.hhj.shop.entity.OrderG">
+            <id column="oid" property="id"/>
+            <result column="o_id" property="oId"/>
+            <result column="g_id" property="gId"/>
+            <result column="number" property="number"/>
+        </collection>
+
+        <collection property="userList" ofType="com.hhj.shop.entity.User">
+            <id column="uid" property="id"/>
+            <result column="uname" property="name"/>
+            <result column="uphone" property="phone"/>
+        </collection>
+
+        <collection property="addressList" ofType="com.hhj.shop.entity.Address">
+            <id column="aid" property="id"/>
+            <result column="aname" property="name"/>
+            <result column="detailed" property="detailed"/>
+            <!--<result  column="uphone" property="phone"/>-->
+        </collection>
+
+        <collection property="memberList" ofType="com.hhj.shop.entity.Member">
+            <id column="mid" property="id"/>
+            <result column="mname" property="name"/>
+            <result column="mphone" property="phone"/>
+        </collection>
+
+    </resultMap>
+
+    <resultMap id="ResultMap" type="com.hhj.shop.dto.StatisticsDTO">
+        <id column="createdate" jdbcType="VARCHAR" property="createdate"/>
+        <result column="total" jdbcType="INTEGER" property="total"/>
+        <result column="value" jdbcType="DECIMAL" property="value"/>
+    </resultMap>
+
+    <resultMap id="ResultM" type="com.hhj.shop.dto.OrderTypeDTO">
+        <id column="status" jdbcType="INTEGER" property="status"/>
+        <result column="status_zero" jdbcType="INTEGER" property="status_zero"/>
+        <result column="status_one" jdbcType="INTEGER" property="status_one"/>
+        <result column="status_two" jdbcType="INTEGER" property="status_two"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+		id, member_id, ad_id, order_status, createtime, a_id, order_settlement_time,
+		good_amount_total
+	</sql>
+
+
+    <delete id="delete" parameterType="java.lang.Integer">
+		delete from `order`
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
+
+
+    <insert id="insert" parameterType="com.hhj.shop.entity.Order">
+		insert into `order` (id, member_id, ad_id, order_status,
+		createtime, a_id, order_settlement_time,
+		good_amount_total)
+		values (#{id,jdbcType=VARCHAR}, #{memberId,jdbcType=INTEGER}, #{adId,jdbcType=INTEGER}, #{orderStatus,jdbcType=INTEGER},
+		#{createtime,jdbcType=VARCHAR}, #{aId,jdbcType=INTEGER}, #{orderSettlementTime,jdbcType=VARCHAR},
+		#{goodAmountTotal,jdbcType=DECIMAL})
+	</insert>
+
+
+    <insert id="insertDynamic" parameterType="com.hhj.shop.entity.Order">
+        insert into `order`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="Oid != null">
+                id,
+            </if>
+            <if test="memberId != null">
+                member_id,
+            </if>
+            <if test="adId != null">
+                ad_id,
+            </if>
+            <if test="orderStatus != null">
+                order_status,
+            </if>
+            <if test="createtime != null">
+                createtime,
+            </if>
+            <if test="aId != null">
+                a_id,
+            </if>
+            <if test="orderSettlementTime != null">
+                order_settlement_time,
+            </if>
+            <if test="goodAmountTotal != null">
+                good_amount_total,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="Oid != null">
+                #{Oid,jdbcType=VARCHAR},
+            </if>
+            <if test="memberId != null">
+                #{memberId,jdbcType=INTEGER},
+            </if>
+            <if test="adId != null">
+                #{adId,jdbcType=INTEGER},
+            </if>
+            <if test="orderStatus != null">
+                #{orderStatus,jdbcType=INTEGER},
+            </if>
+            <if test="createtime != null">
+                #{createtime,jdbcType=VARCHAR},
+            </if>
+            <if test="aId != null">
+                #{aId,jdbcType=INTEGER},
+            </if>
+            <if test="orderSettlementTime != null">
+                #{orderSettlementTime,jdbcType=VARCHAR},
+            </if>
+            <if test="goodAmountTotal != null">
+                #{goodAmountTotal,jdbcType=DECIMAL},
+            </if>
+        </trim>
+    </insert>
+
+
+    <update id="updateDynamic" parameterType="com.hhj.shop.entity.Order">
+        update `order`
+        <set>
+            <if test="memberId != null">
+                member_id = #{memberId,jdbcType=INTEGER},
+            </if>
+            <if test="adId != null">
+                ad_id = #{adId,jdbcType=INTEGER},
+            </if>
+            <if test="orderStatus != null">
+                order_status = #{orderStatus,jdbcType=INTEGER},
+            </if>
+            <if test="createtime != null">
+                createtime = #{createtime,jdbcType=VARCHAR},
+            </if>
+            <if test="aId != null">
+                a_id = #{aId,jdbcType=INTEGER},
+            </if>
+            <if test="orderSettlementTime != null">
+                order_settlement_time = #{orderSettlementTime,jdbcType=VARCHAR},
+            </if>
+            <if test="goodAmountTotal != null">
+                good_amount_total = #{goodAmountTotal,jdbcType=DECIMAL},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <update id="batchUpdate" parameterType="java.util.List">
+        update `order`
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="order_status =case" suffix="end,">
+                <foreach collection="orderList" item="item" index="index">
+                    when id=#{item.oid} then #{item.orderStatus}
+                </foreach>
+            </trim>
+            <trim prefix="order_settlement_time =case" suffix="end,">
+                <foreach collection="orderList" item="item" index="index">
+                    when id=#{item.oid} then #{item.orderSettlementTime}
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach collection="orderList" index="index" item="item" separator="," open="(" close=")">
+            #{item.oid,jdbcType=VARCHAR}
+        </foreach>
+    </update>
+
+    <update id="update" parameterType="com.hhj.shop.entity.Order">
+		update `order`
+		set member_id = #{memberId,jdbcType=INTEGER},
+		ad_id = #{adId,jdbcType=INTEGER},
+		order_status = #{orderStatus,jdbcType=INTEGER},
+		createtime = #{createtime,jdbcType=VARCHAR},
+		a_id = #{aId,jdbcType=INTEGER},
+		order_settlement_time = #{orderSettlementTime,jdbcType=VARCHAR},
+		good_amount_total = #{goodAmountTotal,jdbcType=DECIMAL}
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+
+
+    <select id="selectById" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		o.*,m.id as mid,m.name as mname,m.phone as mphone,u.name as uname,u.phone as uphone,u.id as uid,ad.name as aname,ad.id as aid,ad.detailed
+		from  `order` as o,member as m,user as u,address as ad
+		where o.member_id=m.id and o.a_id=u.id and o.ad_id=ad.id and o.id = #{id,jdbcType=VARCHAR}
+	</select>
+
+    <select id="selectByOrderSales" parameterType="java.lang.String" resultMap="ResultMap">
+		select FROM_UNIXTIME(createtime,'%Y/%m/%d') as createdate,sum(good_amount_total) as value,count(id) as total
+        FROM `order`
+        where createtime BETWEEN #{pastTimeStr,jdbcType=VARCHAR} and #{currenttimeStr,jdbcType=VARCHAR}
+        GROUP BY createdate;
+	</select>
+
+    <select id="findByMIdOrUId" parameterType="java.lang.String" resultMap="ResultM">
+        select count(order_status) AS status,
+        SUM(CASE WHEN `order_status` = 0 THEN 1 ELSE 0 END) AS status_zero,
+        SUM(CASE WHEN `order_status` = 1 THEN 1 ELSE 0 END) AS status_one,
+        SUM(CASE WHEN `order_status` = 2 THEN 1 ELSE 0 END) AS status_two
+        from `order`
+        where 1=1
+        <if test="mid != null and mid != ''">
+            and member_id = #{mid,jdbcType=INTEGER}
+        </if>
+        <if test="uid != null and uid != ''">
+            and a_id = #{uid,jdbcType=INTEGER}
+        </if>
+    </select>
+
+
+    <sql id="findPageWithWhere">
+        <where>1=1
+            <if test="id != null">
+                and id = #{id,jdbcType=VARCHAR}
+            </if>
+            <if test="memberId != null">
+                and member_id = #{memberId,jdbcType=INTEGER}
+            </if>
+            <if test="adId != null">
+                and ad_id = #{adId,jdbcType=INTEGER}
+            </if>
+            <if test="orderStatus != null">
+                and order_status = #{orderStatus,jdbcType=INTEGER}
+            </if>
+            <if test="createtime != null and createtime != ''">
+                and createtime = #{createtime,jdbcType=VARCHAR}
+            </if>
+            <if test="aId != null">
+                and a_id = #{aId,jdbcType=INTEGER}
+            </if>
+            <if test="orderSettlementTime != null and orderSettlementTime != ''">
+                and order_settlement_time = #{orderSettlementTime,jdbcType=VARCHAR}
+            </if>
+            <if test="goodAmountTotal != null">
+                and good_amount_total = #{goodAmountTotal,jdbcType=DECIMAL}
+            </if>
+        </where>
+    </sql>
+
+
+    <select id="findPageWithResult" parameterType="com.hhj.shop.dto.PageDTO" resultMap="BaseResultMap">
+        select
+        o.*,m.id as mid,m.name as mname,m.phone as mphone,u.name as uname,u.phone as uphone,u.id as uid,ad.name as
+        aname,ad.id as aid,ad.detailed
+        from `order` as o,member as m,user as u,address as ad
+        where o.member_id=m.id and o.a_id=u.id and o.ad_id=ad.id
+        <if test="keywords != null and keywords != ''">and o.id like #{keywords}</if>
+        <if test="mid != null and mid != ''">and o.member_id = #{mid}</if>
+        <if test="uid != null and uid != ''">and o.a_id = #{uid}</if>
+        <if test="status != null and status != ''">and o.order_status = #{status}</if>
+        ORDER BY o.id DESC
+        limit #{page},#{limit}
+    </select>
+
+    <select id="findWithAmountTotal" resultType="java.math.BigDecimal">
+        SELECT sum(good_amount_total) FROM `order`
+    </select>
+
+    <select id="findWithOrderTotal" resultType="Integer">
+       SELECT count(id) FROM `order`
+    </select>
+
+    <select id="findWithNowOrderTotal" resultType="Integer">
+        SELECT count(id) FROM `order` where createtime = unix_timestamp(now())
+    </select>
+
+
+    <select id="findPageWithCount" parameterType="com.hhj.shop.dto.PageDTO" resultType="Integer">
+        select count(1) from `order`
+        where 1=1
+        <if test="keywords != null and keywords != ''">and id like #{keywords}</if>
+        <if test="mid != null and mid != ''">and member_id = #{mid}</if>
+        <if test="uid != null and uid != ''">and a_id = #{uid}</if>
+        <if test="status != null and status != ''">and order_status = #{status}</if>
+    </select>
+
+</mapper>

@@ -1,0 +1,5 @@
+JDK 1.8+MySQL 5.5+IDEA 2020.1+Redis 5.0.10
+内网穿透:http://hhj.nat300.top>>http://localhost:8089/
+管理端地址：http://hhj.nat300.top/shop/admin/login
+用户端会员首页地址：http://hhj.nat300.top/shop/index/index
+用户端自提点管理员首页地址：http://hhj.nat300.top/shop/index/user_login

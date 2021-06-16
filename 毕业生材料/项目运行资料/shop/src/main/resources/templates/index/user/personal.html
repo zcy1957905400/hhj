@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <base th:href="@{/}">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes"/>
+    <title>个人中心</title>
+
+    <link href="css/bootstrap.css" th:href="@{static/index/css/bootstrap.css}" rel="stylesheet" type="text/css"/>
+    <link href="css/home.css" th:href="@{static/index/css/home.css}" rel="stylesheet" type="text/css"/>
+
+    <link href="http://at.alicdn.com/t/font_l6a0fwucxvzehfr.css" rel="stylesheet" type="text/css"/>
+    <link href="http://at.alicdn.com/t/font_jvc3xp5ob1uac3di.css" rel="stylesheet" type="text/css"/>
+    <link href="http://at.alicdn.com/t/font_2426641_lt111qdz5v.css" rel="stylesheet" type="text/css"/>
+    <link href="http://at.alicdn.com/t/font_2427478_4yurfmgtcoe.css" rel="stylesheet" type="text/css"/>
+
+</head>
+
+<body>
+
+
+<!--头部-->
+<div class="zhang">
+    <div class="container">
+        <div class="xiao">
+            <a href="javascript:;"><span class="iconfont icon-xiaoxi"><i></i></span></a>
+            <a href="/shop/index/user_information"><span class="iconfont icon-iconfontshezhi"></span></a>
+        </div>
+        <div class="tou_x">
+            <a href="/shop/index/user_information">
+                <div class="iconfont img"><img src="" id="img" style="width: 60px;height: 60px;"/></div>
+                <div class="yong">
+                    <p id="mname">请登录</p>
+                    <span id="mphone">手机号：*********</span>
+                </div>
+                <div class="yong" style="float: right;margin-right: 10px;font-size: 12px">
+                    <p id="leaveAmount">余额：0.50元</p>
+                    <span ><a href="/shop/index/user_withdrawals" class="btn btn-info btn-sm" style="width:60px;margin-left: 10px;">提现</a></span>
+                </div>
+            </a>
+
+        </div>
+    </div>
+</div>
+
+<!--列表-->
+
+<div class="ding">
+    <div class="one">
+        <div class="container">
+            <a href="/shop/index/user_order_info">
+                <p class="biao"><i class="iconfont icon-jiantou"></i></p>
+            </a>
+        </div>
+    </div>
+    <ul>
+        <li>
+            <a href="/shop/index/user_order_info">
+                <span class="iconfont icon-qianbao-"><i id="status">6</i></span>
+                <p>全部订单</p>
+            </a>
+        </li>
+        <li>
+            <a href="/shop/index/user_order_info">
+                <span class="iconfont icon-daifahuo1"><i id="status_zero">2</i></span>
+                <p>待支付</p>
+            </a>
+        </li>
+        <li>
+            <a href="/shop/index/user_order_info">
+                <span class="iconfont icon-daishouhuo"><i id="status_one">3</i></span>
+                <p>待提货</p>
+            </a>
+        </li>
+        <li>
+            <a href="/shop/index/user_order_info">
+                <span class="iconfont icon-daipingjia1"><i id="status_two">1</i></span>
+                <p>已提货</p>
+            </a>
+        </li>
+
+    </ul>
+</div>
+
+
+<!--列表-->
+<div class="lie_y">
+    <div class="container">
+        <div class="row">
+            <!--<div class="col-xs-4">-->
+                <!--<a href="/shop/index/recommend">-->
+                    <!--<span class="iconfont icon-shoucang"></span>-->
+                    <!--<p class="lll">数据统计</p>-->
+                <!--</a>-->
+            <!--</div>-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--<div class="col-xs-4">-->
+            <!--<a href="/shop/index/footprint">-->
+            <!--<span class="iconfont icon-zuji1" style="color:#f9a900;"></span>-->
+            <!--<p class="lll">我的足迹</p>-->
+            <!--</a>-->
+            <!--</div>-->
+
+            <!--<div class="col-xs-4">-->
+                <!--<a href="/shop/index/address">-->
+                    <!--<span class="iconfont icon-shouhuodizhi" style="color:#72ad14;"></span>-->
+                    <!--<p class="lll">自提地址</p>-->
+                <!--</a>-->
+            <!--</div>-->
+
+            <div class="col-xs-4">
+                <a href="/shop/index/user_commission">
+                    <span class="iconfont icon-shangjia"></span>
+                    <p class="lll">佣金记录</p>
+                </a>
+            </div>
+            <div class="col-xs-4">
+                <a href="/shop/index/user_wdetailed">
+                    <span class="iconfont icon-tuijian" style="color:#bd45e5;"></span>
+                    <p class="lll">提现明细</p>
+                </a>
+            </div>
+            <div class="col-xs-12">
+                <a href="#">
+                    <p class="lll lianxi" style="margin-bottom:0.5em">如果您有运营方面的疑问</p>
+                    <p class="lll">请致电：<em class="rexian">400-000-0000</em></p>
+                </a>
+            </div>
+            <!--<div class="col-xs-4">
+                <a href="#">
+                    <span class="iconfont icon-shimingrenzheng" style="color:#fe6e12;"></span>
+                    <p class="lll">实名认证</p>
+                </a>
+            </div>-->
+            <!--<div class="col-xs-4">
+                <a href="#">
+                    <span class="iconfont icon-conpon1" style="color:#f9a900;"></span>
+                    <p class="lll">代金券</p>
+                </a>
+            </div>
+            <div class="col-xs-4">
+                <a href="#">
+                    <span class="iconfont icon-hongbao" style="color:#fa3535;"></span>
+                    <p class="lll">红包</p>
+                </a>
+            </div>-->
+
+        </div>
+    </div>
+</div>
+
+
+<!--footer-->
+<div class="footer">
+
+</div>
+<script src="js/jquery.min.js" th:src="@{static/index/js/jquery.min.js}" type="text/javascript"></script>
+<script>
+    var uid = sessionStorage.getItem('uid');
+    var token = sessionStorage.getItem('token');
+    $.ajax({
+        url: "/shop/user/findById"
+        , headers: {
+            "token": token,
+            "Access-Control-Allow-Origin": "*"
+        }
+        , type: "get"
+        , data: {"id": uid}
+        , contentType: 'application/json'
+        , success: function (data) {
+            if (data.code==0){
+                $('#mname').text(data.data.name);
+                $('#mphone').text("手机号：" + data.data.phone);
+                sessionStorage.setItem('phone',data.data.phone);
+                sessionStorage.setItem('leaveAmount',data.data.leaveAmount);
+                $('#leaveAmount').text("余额：" + data.data.leaveAmount+"元");
+                $('#img').attr('src', data.data.portrait);
+            }else{
+                window.location.href='/shop/index/user_login';
+            }
+
+        }
+    });
+
+    $.ajax({
+        url: "/shop/order/findByIdResultCount"
+        , headers: {
+            "token": token,
+            "Access-Control-Allow-Origin": "*"
+        }
+        , type: "get"
+        , data: {"uid": uid}
+        , contentType: 'application/json'
+        , success: function (data) {
+            $('#status').text(data.data.status);
+            $('#status_zero').text(data.data.status_zero);
+            $('#status_one').text( data.data.status_one);
+            $('#status_two').text(data.data.status_two);
+        }
+    });
+
+</script>
+<script src="js/bootstrap.min.js" th:src="@{static/index/js/bootstrap.min.js}" type="text/javascript"></script>
+<script src="js/index.js" th:src="@{static/index/js/index.js}" type="text/javascript"></script>
+
+
+</body>
+</html>

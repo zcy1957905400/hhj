@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <base th:href="@{/}">
+    <title>欢迎页面-L-admin1.0</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="shortcut icon" th:href="@{static/admin/images/favicon.ico}" type="image/x-icon" />
+    <link rel="stylesheet" th:href="@{static/admin/css/font.css}">
+    <link rel="stylesheet" th:href="@{static/admin/css/xadmin.css}">
+    <script th:src="@{static/admin/js/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{static/admin/lib/layui/layui.js}" charset="utf-8"></script>
+    <script type="text/javascript" th:src="@{static/admin/js/xadmin.js}"></script>
+    <link href="css/bootstrap.css" th:href="@{static/index/css/bootstrap.css}" rel="stylesheet" type="text/css" />
+    <link href="css/home.css" th:href="@{static/index/css/home.css}" rel="stylesheet" type="text/css" />
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+      <link href="http://at.alicdn.com/t/font_u5tafk2orz281tt9.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+    <style> .layui-form-label {
+        width: 100px !important;
+        text-align: center !important;
+    }
+
+    .layui-input-block {
+        margin-left: 100px !important;
+    }
+    </style>
+
+  </head>
+  
+  <body>
+  <!--top-->
+  <div class="top_c">
+      <a href="/shop/index/personal" class="iconfont icon-jiantou-copy-copy" >《</a>
+      <p class="titi">门店入驻报名</p>
+  </div>
+    <div class="x-body" style="margin-top: 3em">
+        <form class="layui-form">
+            <div class="layui-form-item">
+                <label for="phone" class="layui-form-label">
+                    手机号
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="phone" name="phone" required lay-verify="required|phone"
+                           autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">
+                    <span class="x-red">*</span>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+            <label for="name" class="layui-form-label">
+                姓名
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="name" name="name" required lay-verify="required|integer"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                <span class="x-red">*</span>
+            </div>
+    </div>
+
+            <div class="layui-form-item">
+                <label for="regId" class="layui-form-label">
+                    所属地区
+                </label>
+                <div class="layui-input-inline">
+                    <select id="regId" name="regId" required lay-verify="required" autocomplete="off" ><option></option></select>
+                </div>
+                <div class="layui-form-mid layui-word-aux">
+                    <span class="x-red">*</span>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+            <label for="add_name" class="layui-form-label">
+                自提点名称
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="add_name" name="add_name" required lay-verify="required|integer"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                <span class="x-red">*</span>
+            </div>
+        </div>
+
+            <div class="layui-form-item">
+                <label for="detailed" class="layui-form-label">
+                    详细地址
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="detailed" name="detailed" required lay-verify="required"
+                           autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">
+                    <span class="x-red">*</span>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label for="password" class="layui-form-label">
+                   密码
+                </label>
+                <div class="layui-input-inline">
+                    <input type="password" id="password" name="password" required lay-verify="required|pass"
+                           autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">
+                    <span class="x-red">*</span>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label for="repass" class="layui-form-label">
+                    确认密码
+                </label>
+                <div class="layui-input-inline">
+                    <input type="password" id="repass" name="repass" required lay-verify="required|repass"
+                           autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">
+                    <span class="x-red">*</span>
+                </div>
+            </div>
+          <div class="layui-form-item">
+              <label for="uploadPic" class="layui-form-label">
+                  上传图片
+              </label>
+              <div class="layui-input-inline" style="padding-left: 10px;">
+                  <button type="button" class="layui-btn" id="uploadPic">
+                      <i class="layui-icon">&#xe67c;</i>上传图片
+                  </button>
+              </div>
+
+              <div class="layui-form-mid layui-word-aux">
+                  <span class="x-red">*</span>
+                  <!-- 隐藏的input,一个隐藏的input（用于保存文件url） -->
+                  <input type="hidden" id="portrait" name="portrait" value=""/>
+                  <img class="layui-upload-img" width="100px" height="80px" id="aftershow"/>
+              </div>
+
+              <div class="layui-form-item" style="padding-left: 100px">
+                  <button  class="layui-btn" lay-filter="add1" lay-submit="">
+                      提交
+                  </button>
+              </div>
+              　
+      　　　　<!-- 预览区域 -->
+      <!--　　　　<div class="layui-upload-list">-->
+      <!--　　　　　　<img class="layui-upload-img" width="100px" height="80px" id="preShow" onclick="previewImg(this)"/>-->
+      <!--　　　　　　<p id="demoText"></p>-->
+      <!--　　　　</div>-->
+          </div>
+
+      </form>
+    </div>
+    <script>
+        layui.use(['form','layer','upload'], function(){
+            $ = layui.jquery;
+          var form = layui.form
+          ,layer = layui.layer
+              , upload = layui.upload;
+            var $ = layui.jquery;
+
+          //获取分类
+            $.ajax({
+                type: 'POST',
+                url: '/shop/Region/findAllRegion',
+                dataType: 'json',
+                headers:{"Access-Control-Allow-Origin":"*"},
+                notice: false,
+                success: function (resp) {
+                    if (resp.code == 0) {
+                        var data = resp.data;
+                        $.each(data, function (index, item) {
+                            $('#regId').append(new Option(item.name, item.id));
+                        });
+                        layui.form.render("select"); //刷新表单select选择框渲染
+                    }
+                }
+            });
+
+            // 监听
+            $(document).ready(function() {
+                // select下拉框选中触发事件
+                form.on("select", function(data){
+                    layer.msg(data.value); // 获取选中的值
+                });
+
+            });
+
+            //上传图片
+            var uploadInst = upload.render({
+                elem: '#uploadPic' //绑定元素
+                ,url: '/shop/goods/imageUpload' //上传接口 [[@{/upload/img}]]
+                , headers:{"Access-Control-Allow-Origin":"*"}
+                // ,auto: false
+                ,exts: 'doc|docx|pdf|jpg|jpeg|png|zip|'
+                // ,bindAction: '#uploadPicBtn'
+                ,before: function(obj){
+                    //预读本地文件示例，不支持ie8
+                    obj.preview(function(index, file, result){
+                        $('#preShow').attr('src', result); //图片链接（base64）
+                    });
+                }
+                ,done: function(res){
+                    //上传失败
+                    if(res.code > 0){
+                        return layer.msg('上传失败');
+                    }
+                    //上传成功
+                    if(res.code == 0){
+                        $('#aftershow').attr('src', res.data.src);
+                        document.getElementById("portrait").value = res.data.src;
+                        return layer.msg('上传成功');
+                    }
+
+                }
+                ,error: function(re){
+                    var demoText = $('#demoText');
+                    demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                    demoText.find('.demo-reload').on('click', function(){
+                        uploadInst.upload();
+                    });
+                }
+            });
+
+        
+          // //自定义验证规则
+          form.verify({
+          //   // clsName: function(value){
+          //   //   if(value.length < 1 && value.length>5){
+          //   //     return '分类名为2到4个字符';
+          //   //   }
+          //   // }
+              phone: [/^1\d{10}$/, "请输入正确的手机号"]
+              ,name: [/(.+){2,6}$/, '分类名为2到6个字符']
+              ,synopsis: [/(.+){1,50}$/, '简介不超过50个字符']
+              ,price:[/^(?!0+$)(?!0*\.0*$)\d{1,8}(\.\d{1,2})?$/,'金额必须为纯数字，小数点前8位后2位']
+              ,integer: [
+                  /^[1-9]\d*$/
+                  , '只能输入正整数'
+              ]
+              ,pass: [/(.+){6,12}$/, '密码必须6到12位']
+              ,repass: function(value){
+                  if($('#password').val()!=$('#repass').val()){
+                      return '两次密码不一致';
+                  }
+              }
+            // ,repass: function(value){
+            //     if($('#L_pass').val()!=$('#L_repass').val()){
+            //         return '两次密码不一致';
+            //     }
+            // }
+          });
+
+          // //监听提交
+          form.on('submit(add1)', function(data){
+            console.log(data.field);
+            // //发异步，把数据提交给服务器
+              $.ajax({
+                  url:"/shop/user/add"
+                  ,headers:{"Access-Control-Allow-Origin":"*"}
+                  ,type : "POST"
+                  ,dataType : "json"
+                  ,data:JSON.stringify(data.field)
+                  ,contentType: 'application/json'
+                  ,success : function(data) {
+                      console.log(data);
+                      //layer.msg(data.msg);
+                      if (data.code==0){
+                          layer.alert("增加成功，请耐心等候！三个工作日内会有回复！", {icon: 6},function () {
+                              window.location.href='/shop/index/personal';
+                            });
+                      } else if (data.code == 1005) {
+                          layer.confirm(data.msg+",请直接登录或找回密码！", {
+                              btn: ['直接登录', '忘记密码'] //可以无限个按钮
+                              ,btn3: function(index, layero){
+                                  //按钮【按钮三】的回调
+                                  layer.msg(data.msg+"1");
+                              }
+                          }, function(index, layero){
+                              //按钮【按钮一】的回调
+                              window.location.href='/shop/index/user_login';
+                          }, function(index){
+                              //按钮【按钮二】的回调
+                              window.location.href='/shop/index/user_forget';
+                              layer.msg(data.msg+"3");
+                          });
+                      }else{
+                          layer.msg(data.msg);
+                      }
+                      //parent.location.reload();
+                       //location.reload(); //删除成功后再刷新
+                  },
+                  error : function(data) {
+                      layer.msg(data.msg);
+                  }
+
+              });
+
+            return false;
+          });
+          
+          
+        });
+
+    </script>
+  </body>
+</html>

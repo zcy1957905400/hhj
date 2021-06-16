@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <base th:href="@{/}">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" />
+<title>name</title>
+
+    <link href="css/bootstrap.css" th:href="@{static/index/css/bootstrap.css}" rel="stylesheet" type="text/css" />
+    <link href="css/home.css" th:href="@{static/index/css/home.css}" rel="stylesheet" type="text/css" />
+
+<link href="http://at.alicdn.com/t/font_l6a0fwucxvzehfr.css" rel="stylesheet" type="text/css" />
+<link href="http://at.alicdn.com/t/font_2427667_mlrxu06xaq.css" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+<!--top-->
+<div class="top_c">
+	<a href="javascript:history.back(-1);" class="iconfont icon-jiantou-copy-copy"></a>
+	<p class="titi">订单详情</p>
+</div>
+
+
+<!--列表-->
+<div class="deta">
+    <div class="zhuang"><em id="st">待付款 </em><em id="" style="float: right;padding-right: 30px">提货号：<span id="oid1"></span></em></div>
+    <div class="d_min"><p>收货人：<span id="mname">hhj</span><em style="float: right;padding-right: 30px" id="mphone">12345678911</em>
+    </p></div>
+    <div class="shouhuo">
+        <p><em style="float: right;padding-right: 30px"></em></p>
+        </br>
+        <p>自提点：<span id="uname">湖南信息学院</span><a href="" id="uphone"><i class="iconfont icon-answer" style="float: right;padding-right: 30px">联系门店</br><span id="uphone1"></span></i></a>
+        </p>
+        <p><span id="detailed">湖南信息学院校园超市</span> </p>
+    </div>
+    <p class="d_min">订单明细</p>
+    <div class="leb">
+
+        <div class="container">
+            <table border="0" cellpadding="0" cellspacing="0" class="table" id="table">
+                <tbody>
+                <tr>
+                    <td>康师傅香辣牛肉面</td>
+                    <td><span class="j_ge" style="color:#aaa;">×1</span></td>
+                    <td><span class="j_ge" style="color:#444;">￥3.50</span></td>
+                </tr>
+                <tr>
+                    <td>康师傅香辣牛肉面</td>
+                    <td><span class="j_ge" style="color:#aaa;">×1</span></td>
+                    <td><span class="j_ge" style="color:#444;">￥3.50</span></td>
+                </tr>
+                <tr>
+                    <td>康师傅香辣牛肉面</td>
+                    <td><span class="j_ge" style="color:#aaa;">×1</span></td>
+                    <td><span class="j_ge" style="color:#444;">￥3.50</span></td>
+                </tr>
+                <tr>
+                    <td>康师傅香辣牛肉面</td>
+                    <td><span class="j_ge" style="color:#aaa;">×1</span></td>
+                    <td><span class="j_ge" style="color:#444;">￥3.50</span></td>
+                </tr>
+                <tr>
+                    <td>康师傅香辣牛肉面</td>
+                    <td><span class="j_ge" style="color:#aaa;">×1</span></td>
+                    <td><span class="j_ge" style="color:#444;">￥3.50</span></td>
+                </tr>
+                <tr>
+                    <td>康师傅香辣牛肉面</td>
+                    <td><span class="j_ge" style="color:#aaa;">×1</span></td>
+                    <td><span class="j_ge" style="color:#444;">￥3.50</span></td>
+                </tr>
+                </tbody>
+            </table>
+            <span class="hui" style="margin-right:10px;float:right;">实付： <em>￥<span id="goodAmountTotal">13.00</span></em></i></span>
+        </div>
+    </div>
+    <p class="d_min">订单信息</p>
+    <div class="leb">
+        <div class="container">
+            <span class="hui" style="border-top:none;">订单编号<i id="oid">48755555456558</i></span>
+            <span class="hui">下单时间<i id="time">2017-02-28 15:02</i></span>
+        </div>
+    </div>
+</div>
+
+<div class="button bu_fi" id="btn">
+    <a href="#" class="liji">继续购物</a>
+</div>
+<script src="js/jquery.min.js" th:src="@{static/index/js/jquery.min.js}" type="text/javascript"></script>
+<script src="js/orderAjax.js" th:src="@{static/index/js/orderAjax.js}" type="text/javascript"></script>
+<script>
+    function getFormatDate1(date){
+        var nowDate = new Date(date);
+        var year = nowDate.getFullYear();
+        var month = nowDate.getMonth() + 1 < 10 ? "0" + (nowDate.getMonth() + 1) : nowDate.getMonth() + 1;
+        var date = nowDate.getDate() < 10 ? "0" + nowDate.getDate() : nowDate.getDate();
+        var hour = nowDate.getHours()< 10 ? "0" + nowDate.getHours() : nowDate.getHours();
+        var minute = nowDate.getMinutes()< 10 ? "0" + nowDate.getMinutes() : nowDate.getMinutes();
+        var second = nowDate.getSeconds()< 10 ? "0" + nowDate.getSeconds() : nowDate.getSeconds();
+        return year + "-" + month + "-" + date+" "+hour+":"+minute+":"+second;
+    }
+    var Oid = sessionStorage.getItem('Oid');
+    //alert(Oid);
+    var token = sessionStorage.getItem('token');
+    $.ajax({
+        url : "/shop/order/findById"
+        , headers:{"token":token, "Access-Control-Allow-Origin":"*"}
+        ,type : "get"
+        ,data:{"Oid":Oid}
+        ,contentType: 'application/json'
+        ,success: function(d){
+            console.log(d);
+            switch (d.data.orderStatus){
+                case 0 :
+                    $('#st').text("待支付");
+                    break;
+                case 1:
+                    $('#st').text("待提货");
+                    break;
+                case 3 :
+                    $('#st').text("退货中");
+                    break;
+                case 4:
+                    $('#st').text("已退货");
+                    break;
+                case 5 :
+                    $('#st').text("已取消");
+                    break;
+                default:
+                    $('#st').text("已提货");
+                    break;
+            }
+            $("#mname").text(d.data.memberList[0].name);
+            $("#mphone").text(d.data.memberList[0].phone);
+            $("#uname").text(d.data.userList[0].name);
+            $("#uphone").href = "tel:"+d.data.userList[0].phone;
+            $("#uphone1").text(d.data.userList[0].phone);
+            $("#detailed").text(d.data.addressList[0].detailed);
+            $("#goodAmountTotal").text(d.data.goodAmountTotal);
+            var oid=d.data.oid;
+            var oid1=oid.substr(oid.length-3,3);
+            $("#oid1").text(oid1);
+            $('#table').empty();   //清空resText里面的所有内容
+            var html = '<tbody>';
+            $.each(d.data.goodsDTOList, function(commentIndex, comment){
+               html += '<tr>\n' +
+                   '                    <td style="width:80px;height:50px;"><img  src="'+comment.photos+'"  style="width:80px;height:50px;"/></td>\n'+
+                   '                    <td style="vertical-align: middle;">'+comment.goods_name+'</td>\n' +
+                   '                    <td style="vertical-align: middle;"><span class="j_ge" style="color:#aaa;">×'+comment.number+'</span></td>\n' +
+                   '                    <td style="vertical-align: middle;"><span class="j_ge" style="color:#444;">￥'+comment.price+'</span></td>\n' +
+                   '                </tr>';
+            });
+            html += '</tbody>';
+            $('#table').html(html);
+            $('#oid').text(d.data.oid);
+            var date=getFormatDate1(d.data.createtime*1000);
+            $('#time').text(date);
+            $('#btn').empty();   //清空resText里面的所有内容
+            var html = '';
+            switch (d.data.orderStatus){
+                case 0 :
+                    html+='  <a href="javascript:;" class="qu" onclick="cancel('+d.data.oid+')">取消订单</a>';
+                    break;
+                default:
+                    html+=' <a href="javascript:;" class="liji" onclick="returno('+d.data.oid+')">申请退货</a>';
+                    break;
+            }
+            $('#btn').html(html);
+        }
+    });
+
+
+
+</script>
+<script src="js/bootstrap.min.js" th:src="@{static/index/js/bootstrap.min.js}"  type="text/javascript"></script>
+<script src="js/index.js" th:src="@{static/index/js/index.js}" type="text/javascript"></script>
+
+</body>
+</html>

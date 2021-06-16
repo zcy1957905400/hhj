@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<base th:href="@{/}">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" />
+	<title>个人信息</title>
+
+	<link href="css/bootstrap.css" th:href="@{static/index/css/bootstrap.css}" rel="stylesheet" type="text/css" />
+	<link href="css/home.css" th:href="@{static/index/css/home.css}" rel="stylesheet" type="text/css" />
+
+<link href="http://at.alicdn.com/t/font_6yxmrwgmg7kl0udi.css" rel="stylesheet" type="text/css" />
+
+
+</head>
+
+<body>
+
+<!--top-->
+<div class="top_c">
+	<a href="/shop/index/personal" class="iconfont icon-jiantou-copy-copy" ></a>
+	<p class="titi">个人信息</p>
+</div>
+
+
+<!--列表-->
+<div class="lie_b" style="margin-top:4em;">
+	<div class="container">
+		<div class="one">
+			<a href="/shop/index/forget">
+				<p class="biao">登录密码<i class="iconfont icon-jiantou"></i></p>
+			</a>
+		</div>
+		<!--        <div class="one" style="border-bottom:none;">-->
+		<!--        	<a href="set.html">-->
+		<!--        		<p class="biao">支付密码<i class="iconfont icon-jiantou"></i></p>-->
+		<!--            </a>-->
+		<!--        </div>-->
+	</div>
+</div>
+
+
+<div class="container">
+    <a href="javascript:;" class="deng" style="margin-top:3em;" onclick="logout()">退出当前账户</a>
+</div>
+
+
+<script src="js/jquery.min.js" th:src="@{static/index/js/jquery.min.js}" type="text/javascript"></script>
+<script>
+	function logout() {
+        sessionStorage.clear();
+        window.location.href='/shop/index/login';
+    }
+	
+</script>
+<script src="js/bootstrap.min.js" th:src="@{static/index/js/bootstrap.min.js}"  type="text/javascript"></script>
+<script src="js/index.js" th:src="@{static/index/js/index.js}" type="text/javascript"></script>
+
+
+
+
+</body>
+</html>

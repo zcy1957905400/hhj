@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <base th:href="@{/}">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" />
+<title>购物车</title>
+
+    <link href="css/bootstrap.css" th:href="@{static/index/css/bootstrap.css}" rel="stylesheet" type="text/css" />
+    <link href="css/home.css" th:href="@{static/index/css/home.css}" rel="stylesheet" type="text/css" />
+
+<link href="http://at.alicdn.com/t/font_l6a0fwucxvzehfr.css" rel="stylesheet" type="text/css" />
+<link href="http://at.alicdn.com/t/font_2426641_lt111qdz5v.css" rel="stylesheet" type="text/css"/>
+
+</head>
+
+<body>
+
+<!--top-->
+<div class="top_c">
+	<a href="javascript:history.back(-1);" class="iconfont icon-jiantou-copy-copy" ></a>
+    <a href="" class="ming" onclick=""></a>
+    <p class="titi">我的购物车</p>
+</div>
+
+<!--历史-->
+
+<div class="product" style="margin-top:4em; margin-bottom:7em;" id="product">
+    <div class="sp_pr">
+        <div class="col-xs-1 col-md-1">
+            <input type="checkbox" name="fav" onclick="checkTest2()" />
+        </div>
+        <a href="business.html" >
+            <img src="images/sp.jpg" class="col-xs-1 col-md-2">
+        </a>
+        <div class="text_p col-xs-4 col-md-5" >
+            <a href="business.html">
+                <p>康师傅香辣牛肉面</p>
+            </a>
+            <span class="yue">规格<em>1215</em></span>
+            <span class="yue">价格：<em class="em_s">￥200</em></span>
+
+        </div>
+        <div class="col-xs-1 col-md-1 right_shop">
+            <!--<button type="button" class="btn  btn-default btn-xs ">删除</button>-->
+        </div>
+        <div class="xuan col-xs-4 col-md-3">
+            <span id="min_1" class="iconfont icon-jianshao " onclick="les(1)"></span>
+            <input id="text_box_1" name="" type="text" value="1" />
+            <span id="add_1" class="iconfont icon-tubiao225" onclick="add(1)"></span>
+        </div>
+    </div>
+
+    <div class="sp_pr">
+        <div class="col-xs-1 col-md-1">
+            <input type="checkbox" name="fav" onclick="checkTest2()" />
+        </div>
+        <a href="business.html" >
+            <img src="images/sp.jpg" class="col-xs-1 col-md-2">
+        </a>
+        <div class="text_p col-xs-4 col-md-5" >
+            <a href="business.html">
+                <p>康师傅香辣牛肉面</p>
+            </a>
+            <span class="yue">规格<em>1215</em></span>
+            <span class="yue">价格：<em class="em_s">￥200</em></span>
+
+        </div>
+        <div class="col-xs-1 col-md-1 right_shop">
+            <button type="button" class="btn  btn-default btn-xs ">删除</button>
+        </div>
+        <div class="xuan col-xs-4 col-md-3">
+            <span id="min_2" class="iconfont icon-jianshao " onclick="les(2)"></span>
+            <input id="text_box_2" name="" type="text" value="1" />
+            <span id="add_2" class="iconfont icon-tubiao225" onclick="add(2)"></span>
+        </div>
+    </div>
+    <div class="sp_pr">
+        <div class="col-xs-1 col-md-1">
+            <input type="checkbox" name="fav" onclick="checkTest2()" />
+        </div>
+        <a href="business.html" >
+            <img src="images/sp.jpg" class="col-xs-1 col-md-2">
+        </a>
+        <div class="text_p col-xs-4 col-md-5" >
+            <a href="business.html">
+                <p>康师傅香辣牛肉面</p>
+            </a>
+            <span class="yue">规格<em>1215</em></span>
+            <span class="yue">价格：<em class="em_s">￥200</em></span>
+
+        </div>
+        <div class="col-xs-1 col-md-1 right_shop">
+            <button type="button" class="btn  btn-default btn-xs ">删除</button>
+        </div>
+        <div class="xuan col-xs-4 col-md-3">
+            <span id="min_3" class="iconfont icon-jianshao " onclick="les(3)"></span>
+            <input id="text_box_3" name="" type="text" value="1" />
+            <span id="add_3" class="iconfont icon-tubiao225" onclick="add(3)"></span>
+        </div>
+    </div>
+</div>
+<!--shopcart-->
+<div class="shopcart">
+    <div class="all col-xs-3">
+        <input type="checkbox" name="fav" id="all" onclick="checkTest1(this)" />全选
+    </div>
+    <div class="jiag col-xs-5">
+        <span style="float:left;padding:2px 0 0 4px;color:#FF0000;font-size:20px;">合计：</span>
+        <span class="jiag" id="zongz">0.00</span>
+    </div>
+    <button type="button" class="btn  btn-danger btn-xs col-xs-4" onclick="settlement()" >去结算</button>
+</div>
+<!--footer-->
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-3">
+                <a href="/shop/index/index" class="dao">
+                    <i class="iconfont icon-home"></i>
+                    <span class="nav_ti">首页</span>
+                </a>
+            </div>
+            <div class="col-xs-3">
+                <a href="/shop/index/business" class="dao">
+                    <i class="iconfont icon-app"></i>
+                    <span class="nav_ti">分类</span>
+                </a>
+            </div>
+            <div class="col-xs-3">
+                <a href="/shop/index/shopcart" class="dao">
+                    <i class="iconfont icon-cart" style="color:#246fc0;"></i>
+                    <span class="nav_ti" style="color:#246fc0;">购物车</span>
+                </a>
+            </div>
+            <div class="col-xs-3">
+                <a href="/shop/index/personal" class="dao">
+                    <i class="iconfont icon-account"></i>
+                    <span class="nav_ti">个人中心</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/jquery.min.js" th:src="@{static/index/js/jquery.min.js}" type="text/javascript"></script>
+<script type="text/javascript" src="js/iscroll.js" th:src="@{static/index/js/iscroll.js}"></script>
+<script>
+    function getFormatDate(){
+        var nowDate = new Date();
+        var year = nowDate.getFullYear();
+        var month = nowDate.getMonth() + 1 < 10 ? "0" + (nowDate.getMonth() + 1) : nowDate.getMonth() + 1;
+        var date = nowDate.getDate() < 10 ? "0" + nowDate.getDate() : nowDate.getDate();
+        var hour = nowDate.getHours()< 10 ? "0" + nowDate.getHours() : nowDate.getHours();
+        var minute = nowDate.getMinutes()< 10 ? "0" + nowDate.getMinutes() : nowDate.getMinutes();
+        var second = nowDate.getSeconds()< 10 ? "0" + nowDate.getSeconds() : nowDate.getSeconds();
+        return year + "-" + month + "-" + date+" "+"16:00:00";
+    }
+
+    var str = getFormatDate();
+    var  mid= sessionStorage .getItem('mid');
+    var token=sessionStorage .getItem('token');
+    $.ajax({
+        url : "/shop/shopcart/findGoodsWithCart"
+        , headers:{"token":token,
+            "Access-Control-Allow-Origin":"*"}
+        ,type : "get"
+        ,data:{"mid":mid}
+        ,contentType: 'application/json'
+        ,success: function(data){
+            console.log(data)
+            $('#product').empty();   //清空resText里面的所有内容
+            var html = '';
+            $.each(data.data, function(commentIndex, comment){
+                console.log(comment)
+                    html += '<div class="sp_pr">\n' +
+                        '        <div class="col-xs-1 col-md-1">\n' +
+                        '            <input type="checkbox" name="fav" onclick="checkTest2()" id="'+comment.id+'" value="'+comment.id+'"/>\n' +
+                        '        </div>\n' +
+                        '        <a href="business.html" >\n' +
+                        '            <img src="'+comment.photos+'" class="col-xs-1 col-md-2">\n' +
+                        '        </a>\n' +
+                        '        <div class="text_p col-xs-4 col-md-5" >\n' +
+                        '            <a href="business.html">\n' +
+                        '                <p>'+comment.goodName+'</p>\n' +
+                        '            </a>\n' +
+                        '            <span class="yue"><em>'+comment.spec+'</em></span>\n' +
+                        '            <span class="yue">价格：<em class="em_s">￥'+comment.price+'</em></span>\n' +
+                        '\n' +
+                        '        </div>\n' +
+                        '        <div class="col-xs-1 col-md-1 right_shop">\n' +
+                        '            <!--<button type="button" class="btn  btn-default btn-xs ">删除</button>-->\n' +
+                        '        </div>\n' +
+                        '        <div class="xuan col-xs-4 col-md-3">\n' +
+                        '            <span id="min_'+comment.id+'" class="iconfont icon-jianshao " onclick="les('+comment.id+')"></span>\n' +
+                        '            <input id="text_box_'+comment.id+'" name="" type="text" value="'+comment.number+'" />\n' +
+                        '            <span id="add_'+comment.id+'" class="iconfont icon-tubiao225" onclick="add('+comment.id+','+comment.inventory+')"></span>\n' +
+                        '        </div>\n' +
+                        '    </div>';
+
+            });
+            $('#product').html(html);
+        }
+    });
+
+    function settlement() {
+        var zongz=$("#zongz").text();
+        //alert(zongz+"  "+mid+" "+" "+token);
+        var idArray=getCheckBox();
+        $.ajax({
+            url : "/shop/order/add"
+            , headers:{"token":token,
+                "Access-Control-Allow-Origin":"*"}
+            ,type : "post"
+            ,data:JSON.stringify({"memberId":mid,"goodAmountTotal":zongz,"ids":idArray})
+            ,contentType: 'application/json'
+            ,success: function(data) {
+                //alert(data.data.toString());
+                sessionStorage.setItem('oid',data.data);
+                window.location.href='/shop/index/details';
+            }
+        });
+
+    }
+    //获取所有选中的CheckBox的id,不包括all
+    function getCheckBox() {
+        var idArray =[];//定义一个数组
+        $("input:checkbox[name=fav]:checked").each(function(i) {
+            if ($(this).attr("id") != "all") {
+                idArray.push($(this).attr("id"));
+            }
+        });
+        //alert("idArray"+idArray.toString());
+        return idArray;
+    }
+</script>
+
+<script src="js/bootstrap.min.js" th:src="@{static/index/js/bootstrap.min.js}"  type="text/javascript"></script>
+<script src="js/index.js" th:src="@{static/index/js/index.js}" type="text/javascript"></script>
+<script src="js/checkOrCancelAll.js" th:src="@{static/index/js/checkOrCancelAll.js}" type="text/javascript"></script>
+
+
+
+</body>
+</html>

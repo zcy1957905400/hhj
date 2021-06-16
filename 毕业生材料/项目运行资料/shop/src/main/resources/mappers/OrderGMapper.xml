@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhj.shop.repository.OrderGRepository">
+
+	<resultMap id="BaseResultMap" type="com.hhj.shop.dto.GoodsDTO">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="goods_name" jdbcType="VARCHAR" property="goods_name" />
+		<result column="price" jdbcType="DECIMAL" property="price" />
+		<result column="number" jdbcType="INTEGER" property="number" />
+		<result column="photos" jdbcType="VARCHAR" property="photos" />
+	</resultMap>
+
+	<resultMap id="ResultMap" type="com.hhj.shop.entity.OrderG">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="o_id" jdbcType="INTEGER" property="oId" />
+		<result column="g_id" jdbcType="INTEGER" property="gId" />
+		<result column="number" jdbcType="INTEGER" property="number" />
+	</resultMap>
+
+
+	<!--<sql id="Base_Column_List">-->
+		<!--id, o_id, g_id, number-->
+	<!--</sql>-->
+
+
+	<!--<delete id="delete" parameterType="java.lang.Integer">-->
+		<!--delete from order_g-->
+		<!--where id = #{id,jdbcType=INTEGER}-->
+	<!--</delete>-->
+
+
+	<!--<insert id="insert" parameterType="com.hhj.shop.entity.OrderG">-->
+		<!--insert into order_g (id, o_id, g_id,-->
+		<!--number)-->
+		<!--values (#{id,jdbcType=INTEGER}, #{oId,jdbcType=INTEGER}, #{gId,jdbcType=INTEGER},-->
+		<!--#{number,jdbcType=INTEGER})-->
+	<!--</insert>-->
+
+
+	<!--<insert id="insertDynamic" parameterType="com.hhj.shop.entity.OrderG">-->
+		<!--insert into order_g-->
+		<!--<trim prefix="(" suffix=")" suffixOverrides=",">-->
+			<!--<if test="id != null">-->
+				<!--id,-->
+			<!--</if>-->
+			<!--<if test="oId != null">-->
+				<!--o_id,-->
+			<!--</if>-->
+			<!--<if test="gId != null">-->
+				<!--g_id,-->
+			<!--</if>-->
+			<!--<if test="number != null">-->
+				<!--number,-->
+			<!--</if>-->
+		<!--</trim>-->
+		<!--<trim prefix="values (" suffix=")" suffixOverrides=",">-->
+			<!--<if test="id != null">-->
+				<!--#{id,jdbcType=INTEGER},-->
+			<!--</if>-->
+			<!--<if test="oId != null">-->
+				<!--#{oId,jdbcType=INTEGER},-->
+			<!--</if>-->
+			<!--<if test="gId != null">-->
+				<!--#{gId,jdbcType=INTEGER},-->
+			<!--</if>-->
+			<!--<if test="number != null">-->
+				<!--#{number,jdbcType=INTEGER},-->
+			<!--</if>-->
+		<!--</trim>-->
+	<!--</insert>-->
+
+
+	<!--<update id="updateDynamic" parameterType="com.hhj.shop.entity.OrderG">-->
+		<!--update order_g-->
+		<!--<set>-->
+			<!--<if test="oId != null">-->
+				<!--o_id = #{oId,jdbcType=INTEGER},-->
+			<!--</if>-->
+			<!--<if test="gId != null">-->
+				<!--g_id = #{gId,jdbcType=INTEGER},-->
+			<!--</if>-->
+			<!--<if test="number != null">-->
+				<!--number = #{number,jdbcType=INTEGER},-->
+			<!--</if>-->
+		<!--</set>-->
+		<!--where id = #{id,jdbcType=INTEGER}-->
+	<!--</update>-->
+
+
+	<!--<update id="update" parameterType="com.hhj.shop.entity.OrderG">-->
+		<!--update order_g-->
+		<!--set o_id = #{oId,jdbcType=INTEGER},-->
+		<!--g_id = #{gId,jdbcType=INTEGER},-->
+		<!--number = #{number,jdbcType=INTEGER}-->
+		<!--where id = #{id,jdbcType=INTEGER}-->
+	<!--</update>-->
+
+
+	<!--<select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">-->
+		<!--select-->
+		<!--<include refid="Base_Column_List" />-->
+		<!--from  order_g-->
+		<!--where id = #{id,jdbcType=INTEGER}-->
+	<!--</select>-->
+
+
+	<!--<sql id="findPageWithWhere">-->
+		<!--<where> 1=1-->
+			<!--<if test="id != null" >-->
+				<!--and id = #{id,jdbcType=INTEGER}-->
+			<!--</if>-->
+			<!--<if test="oId != null" >-->
+				<!--and o_id = #{oId,jdbcType=INTEGER}-->
+			<!--</if>-->
+			<!--<if test="gId != null" >-->
+				<!--and g_id = #{gId,jdbcType=INTEGER}-->
+			<!--</if>-->
+			<!--<if test="number != null" >-->
+				<!--and number = #{number,jdbcType=INTEGER}-->
+			<!--</if>-->
+		<!--</where>-->
+	<!--</sql>-->
+
+
+	<!--<select id="findPageWithResult" parameterType="com.hhj.shop.dto.OrderGDTO" resultMap="BaseResultMap">-->
+		<!--select-->
+		<!--<include refid="Base_Column_List" />-->
+		<!--from  order_g-->
+		<!--<include refid="findPageWithWhere" />-->
+		<!--limit #{start},#{pageSize}-->
+	<!--</select>-->
+
+
+	<!--<select id="findPageWithCount" parameterType="com.hhj.shop.dto.OrderGDTO" resultType="Integer">-->
+		<!--select count(1)-->
+		<!--from order_g-->
+		<!--<include refid="findPageWithWhere" />-->
+	<!--</select>-->
+
+	<select id="findGoodsWithOrder" parameterType="com.hhj.shop.entity.OrderG" resultMap="BaseResultMap">
+		select
+		o.number as 'number',g.price as price,g.photos as photos,g.g_name as goods_name,g.id as id
+		from  `order_g` as o,goods as g
+		where o.g_id=g.id and o.o_id = #{orderG.oId}
+	</select>
+
+
+	<insert id="batchInsert" parameterType="java.util.List" >
+		replace into order_g (o_id, g_id,number)
+		values
+		<foreach collection="orderGList"  separator="," item="orderG" index="i">
+			(#{orderG.oId,jdbcType=INTEGER}, #{orderG.gId,jdbcType=INTEGER},
+			#{orderG.number,jdbcType=INTEGER})
+		</foreach>
+	</insert>
+</mapper>

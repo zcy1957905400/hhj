@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhj.shop.repository.ClassifyRepository">
+
+	<resultMap id="BaseResultMap" type="com.hhj.shop.entity.Classify">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="cls_name" jdbcType="VARCHAR" property="clsName" />
+		<result column="synopsis" jdbcType="VARCHAR" property="synopsis" />
+		<result column="type" jdbcType="INTEGER" property="type" />
+		<result column="createtime" jdbcType="VARCHAR" property="createtime" />
+		<result column="updatetime" jdbcType="VARCHAR" property="updatetime" />
+	</resultMap>
+
+
+	<sql id="Base_Column_List">
+		id, cls_name, synopsis, type, createtime,updatetime
+	</sql>
+
+
+	<delete id="delete" parameterType="java.lang.Integer">
+		delete from classify
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+
+
+	<insert id="insert" parameterType="com.hhj.shop.entity.Classify">
+		insert into classify (cls_name, synopsis,
+		type, createtime)
+		values (#{clsName,jdbcType=VARCHAR}, #{synopsis,jdbcType=VARCHAR},
+		#{type,jdbcType=INTEGER}, #{createtime,jdbcType=VARCHAR})
+	</insert>
+
+
+	<update id="update" parameterType="com.hhj.shop.entity.Classify">
+		update classify
+		<set>
+			<if test="type != null">
+				type = #{type,jdbcType=INTEGER},
+			</if>
+			<if test="updatetime != null">
+				updatetime = #{updatetime,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+
+	<select id="findById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from  classify
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<select id="findByNameWithCount" parameterType="com.hhj.shop.entity.Classify" resultType="java.lang.Integer">
+		select count(1)
+		from classify
+		where cls_name = #{clsName,jdbcType=VARCHAR}
+	</select>
+
+
+	<sql id="findPageWithWhere">
+		<where> 1=1
+			<if test="id != null" >
+				and id = #{id,jdbcType=INTEGER}
+			</if>
+			<if test="clsName != null and clsName != ''" >
+				and cls_name = #{clsName,jdbcType=VARCHAR}
+			</if>
+			<if test="synopsis != null and synopsis != ''" >
+				and synopsis = #{synopsis,jdbcType=VARCHAR}
+			</if>
+			<if test="type != null" >
+				and type = #{type,jdbcType=INTEGER}
+			</if>
+			<if test="createtime != null and createtime != ''" >
+				and createtime = #{createtime,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</sql>
+
+
+	<select id="findPageWithResult" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from  classify
+		where 1=1
+
+		<if test="status == 1"> and type = #{status} </if>
+		<if test="keywords != null and keywords != ''"> and cls_name like #{keywords} </if>
+		<if test="startTime != null and startTime != '' and endTime != null and endTime != ''">and createtime BETWEEN #{startTime} AND #{endTime}</if>
+		limit #{page},#{limit}
+	</select>
+
+	<select id="findAllClassify" resultMap="BaseResultMap">
+		select id,cls_name from  classify where type=1
+	</select>
+
+	<select id="findPageWithCount" resultType="java.lang.Integer">
+		select count(1)
+		from classify
+		where 1=1
+		<if test="status == 1"> and type = #{status} </if>
+		<if test="keywords != null and keywords != ''"> and cls_name like #{keywords} </if>
+		<if test="startTime != null and startTime != '' and endTime != null and endTime != ''">and createtime BETWEEN #{startTime} AND #{endTime}</if>
+	</select>
+
+	<update id="batchUpdate" parameterType="java.util.List">
+		update classify
+		<trim prefix="set" suffixOverrides=",">
+			<trim prefix="type =case" suffix="end,">
+				<foreach collection="classifyList" item="item" index="index">
+					when id=#{item.id} then #{item.type}
+				</foreach>
+			</trim>
+			<trim prefix="updatetime =case" suffix="end,">
+				<foreach collection="classifyList" item="item" index="index">
+					when id=#{item.id} then #{item.updatetime}
+				</foreach>
+			</trim>
+		</trim>
+		where id in
+		<foreach collection="classifyList" index="index" item="item" separator="," open="(" close=")">
+			#{item.id,jdbcType=INTEGER}
+		</foreach>
+	</update>
+
+	<insert id="batchInsert" parameterType="java.util.List" >
+		replace into classify(
+		cls_name, synopsis,type, createtime)
+		values
+		<foreach collection="classifyList"  separator="," item="classify" index="i">
+			(
+			#{classify.clsName},
+			#{classify.synopsis},
+			#{classify.type},
+			#{classify.createtime}
+			)
+		</foreach>
+	</insert>
+
+</mapper>

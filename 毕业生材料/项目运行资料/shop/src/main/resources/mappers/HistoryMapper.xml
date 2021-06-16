@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhj.shop.repository.HistoryRepository">
+
+	<resultMap id="BaseResultMap" type="com.hhj.shop.entity.History">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="u_id" jdbcType="INTEGER" property="uId" />
+		<result column="m_id" jdbcType="INTEGER" property="mId" />
+		<result column="type" jdbcType="INTEGER" property="type" />
+		<result column="ad_id" jdbcType="INTEGER" property="adId" />
+		<collection property="userList"  ofType="com.hhj.shop.entity.User">
+			<id property="id" column="userid"></id>
+			<result property="name" column="username"></result>
+		</collection>
+
+		<collection property="memberList"  ofType="com.hhj.shop.entity.Member">
+			<id property="id" column="mbid"></id>
+			<result property="name" column="mbname"></result>
+		</collection>
+
+		<collection property="addressList"  ofType="com.hhj.shop.entity.Address">
+			<id property="id" column="assid"></id>
+			<result property="name" column="assname"></result>
+			<result property="detailed" column="detailed"></result>
+		</collection>
+	</resultMap>
+
+
+	<resultMap id="BaseResult" type="com.hhj.shop.dto.HistoryAddresssDTO">
+		<id column="h_id" jdbcType="INTEGER" property="hisId" />
+		<result column="add_name" jdbcType="VARCHAR" property="add_name" />
+		<result column="add_detailed" jdbcType="VARCHAR" property="add_detailed" />
+		<result column="add_status" jdbcType="INTEGER" property="add_status" />
+		<result column="his_status" jdbcType="INTEGER" property="his_status" />
+		<result column="portrait" jdbcType="VARCHAR" property="portrait" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, u_id, m_id, type,ad_id
+	</sql>
+		<sql id="usersql">
+			ur.id as userid,ur.name as username,
+		</sql>
+		<sql id="membersql">
+			mb.id as mbid,mb.name as mbname,
+		</sql>
+		<sql id="addresssql">
+			ass.id as assid,ass.name as assname,detailed
+		</sql>
+	<select id="findPageWithResult" parameterType="com.hhj.shop.dto.PageDTO" resultMap="BaseResultMap">
+		select
+		<include refid="usersql"></include>
+		<include refid="membersql"></include>
+		<include refid="addresssql"></include>
+		from  address as ass,user as ur,member as mb,`history` as htoy
+		where  htoy.m_id = mb.id and htoy.u_id = ur.id and htoy.ad_id = ass.id and htoy.m_id=1001
+		<if test="keywords != null and keywords != ''"> and a.name like #{keywords} </if>
+		limit #{page},#{limit}
+	</select>
+
+
+	<select id="findPageWithCount" parameterType="com.hhj.shop.dto.PageDTO" resultType="Integer">
+		select count(1)
+		from  `history`
+		where 1=1
+		<if test="keywords != null and keywords != ''"> and name like #{keywords} </if>
+	</select>
+
+	<delete id="delete" parameterType="Integer">
+			DELETE  FROM  `history` where  id = #{id}
+	</delete>
+
+	<insert id="insertDynamic" parameterType="com.hhj.shop.entity.History">
+		insert into history
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="uId != null">
+				u_id,
+			</if>
+			<if test="mId != null">
+				m_id,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="adId != null">
+				ad_id,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="uId != null">
+				#{uId,jdbcType=INTEGER},
+			</if>
+			<if test="mId != null">
+				#{mId,jdbcType=INTEGER},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=INTEGER},
+			</if>
+			<if test="adId != null">
+				#{adId,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+
+
+	<update id="updateDynamic" parameterType="com.hhj.shop.entity.History">
+		update history
+		<set>
+			<if test="uId != null">
+				u_id = #{uId,jdbcType=INTEGER},
+			</if>
+			<if test="mId != null">
+				m_id = #{mId,jdbcType=INTEGER},
+			</if>
+			<if test="type != null">
+				type = #{type,jdbcType=INTEGER},
+			</if>
+			<if test="adId != null">
+				ad_id=#{adId,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+
+	<update id="update" parameterType="com.hhj.shop.entity.History">
+		update history
+		set u_id = #{uId,jdbcType=INTEGER},
+		m_id = #{mId,jdbcType=INTEGER},
+		type = #{type,jdbcType=INTEGER}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from  history
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<select id="selectByMIdUId" parameterType="com.hhj.shop.entity.History" resultMap="BaseResultMap">
+		select id
+		from  history
+		where m_id = #{mId,jdbcType=INTEGER} and u_id = #{uId,jdbcType=INTEGER}
+	</select>
+
+	<select id="selectBymId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from  history
+		where m_id = #{mid,jdbcType=INTEGER} and type=1
+	</select>
+
+	<select id="selectByHistory" parameterType="com.hhj.shop.entity.History" resultMap="BaseResult">
+		select ass.name as add_name,ass.detailed as add_detailed,u.portrait as portrait,h.id as h_id,ass.type as add_status,h.type as his_status
+		from  history as h,user as u,address as ass
+		where h.u_id=u.id and h.ad_id =ass.id and u.id=ass.u_id
+		<if test="mId != null and mId != ''"> and h.m_id = #{mId,jdbcType=INTEGER} </if>
+		<if test="type == 1 "> and h.type != #{type,jdbcType=INTEGER} </if>
+	</select>
+
+
+	<sql id="findPageWithWhere">
+		<where> 1=1
+			<if test="id != null" >
+				and id = #{id,jdbcType=INTEGER}
+			</if>
+			<if test="uId != null" >
+				and u_id = #{uId,jdbcType=INTEGER}
+			</if>
+			<if test="mId != null" >
+				and m_id = #{mId,jdbcType=INTEGER}
+			</if>
+			<if test="type != null" >
+				and type = #{type,jdbcType=INTEGER}
+			</if>
+		</where>
+	</sql>
+</mapper>

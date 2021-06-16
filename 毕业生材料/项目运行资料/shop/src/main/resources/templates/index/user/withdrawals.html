@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <base th:href="@{/}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" />
+    <title>提现申请</title>
+
+    <link href="css/bootstrap.css" th:href="@{static/index/css/bootstrap.css}" rel="stylesheet" type="text/css" />
+    <link href="css/home.css" th:href="@{static/index/css/home.css}" rel="stylesheet" type="text/css" />
+
+
+<link href="http://at.alicdn.com/t/font_6688xdquixljif6r.css" rel="stylesheet" type="text/css" />
+
+
+</head>
+
+<body>
+
+<!--top-->
+<div class="top_c">
+    <a href="/shop/index/user_personal" class="iconfont icon-jiantou-copy-copy" ></a>
+    <a href="/shop/index/user_wdetailed" class="ming">明细</a>
+    <p class="titi">提现</p>
+</div>
+
+
+<div class="cong">
+	<div class="ka">
+    	<div class="container">
+            <div class="hao">
+                <p>支付宝账号：<span id="phone">173000000000</span></p>
+
+            </div>
+        </div>
+    </div>
+	<p>您的当前账户余额：<em id="leaveAmount">￥20.00</em></p>
+    <div class="zhi">
+    	<div class="container">
+        	<span>金额</span>
+            <form>
+                <input type="text" name="amount" size="60" maxlength="60" style="color:#ccc" value="请输入您的提现金额" onfocus="if(this.value=='请输入您的提现金额'){this.value=''};this.style.color='black';" onblur="if(this.value==''||this.value=='请输入您的提现金额'){this.value='请输入您的提现金额';this.style.color='#ccc';}">
+            </form>
+        </div>
+    </div>
+    <div class="container">
+    	<a href="javascript:;" class="deng" style="margin-top:3em;" onclick="withdrawals()">提 交</a>
+    </div>
+</div>
+
+
+
+<script src="js/jquery.min.js" th:src="@{static/index/js/jquery.min.js}" type="text/javascript"></script>
+
+<script>
+
+    var phone=sessionStorage.getItem('phone');
+    var token=sessionStorage.getItem('token');
+    var leaveAmount=sessionStorage.getItem('leaveAmount');
+    var uid=sessionStorage.getItem('uid');
+    //alert(leaveAmount);
+    $("#phone").text(phone);
+    $("#leaveAmount").text(" ￥"+leaveAmount);
+    function withdrawals() {
+        var x=$("form").serializeArray();
+        var data = {"amount":"","uId":uid};
+        $.each(x, function(i, field){
+            data[field.name] = field.value;
+        });
+        //alert(JSON.stringify(data));
+        if (data['amount']<=leaveAmount){
+            ajaxform();
+        }else {
+            alert("提现金额不能大于可用余额");
+        }
+        function ajaxform() {
+            $.ajax({
+                url: "/shop/withdrawal/add"
+                , headers: {
+                    "token": token,
+                    "Access-Control-Allow-Origin": "*"
+                }
+                , dataType: "json"
+                , data: JSON.stringify(data)
+                , contentType: 'application/json'
+                , type:"post"
+                ,success: function (data) {
+                    if (data.code==0){
+                        alert("提交成功，请耐心等待财务人员审核放款！");
+                        //sessionStorage.setItem("mid", data.data.member.id);
+                        window.location.href='/shop//index/user_personal';
+                    }else {
+                        alert(data.msg);
+                    }
+
+                }
+            });
+        }
+
+        
+    }
+</script>
+
+<script src="js/index.js" th:src="@{static/index/js/index.js}" type="text/javascript"></script>
+
+
+
+</body>
+</html>

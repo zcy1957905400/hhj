@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <base th:href="@{/}">
+    <title>会员列表</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
+    <link rel="shortcut icon" th:href="@{static/admin/images/favicon.ico}" type="image/x-icon"/>
+    <link rel="stylesheet" th:href="@{static/admin/css/font.css}">
+    <link rel="stylesheet" th:href="@{static/admin/css/xadmin.css}">
+    <script th:src="@{static/admin/js/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{static/admin/lib/layui/layui.js}" charset="utf-8"></script>
+    <script type="text/javascript" th:src="@{static/admin/js/xadmin.js}"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+        .layui-table-cell {
+            text-align: center;
+            height: auto;
+            white-space: normal;
+        }
+    </style>
+</head>
+
+<body>
+<div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="javascript:;">首页</a>
+        <a href="javascript:;">用户管理</a>
+        <a href="javascript:;">
+          <cite>会员列表</cite></a>
+      </span>
+    <a class="layui-btn layui-btn-primary layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+       href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:38px">ဂ</i></a>
+</div>
+<div class="x-body">
+    <div class="layui-row">
+        <button class="layui-btn layui-btn-danger" id="export-id">批量导出</button>
+        <div style="float: right">
+            <form class="layui-form layui-col-md12 x-so">
+                <!--<input class="layui-input" placeholder="开始日" name="startTime" id="startTime">-->
+                <!--<input class="layui-input" placeholder="截止日" name="endTime" id="endTime">-->
+
+                <input type="text" name="keywords" placeholder="请输入会员名" autocomplete="off" class="layui-input">
+                <button type="submit" class="layui-btn" lay-submit="" lay-filter="sreach"><i
+                        class="layui-icon">&#xe615;</i></button>
+            </form>
+        </div>
+    </div>
+
+    <table id="idTest" lay-filter="demo"></table>
+    <!--<table class="layui-hide" id="LAY_table_user" lay-filter="useruv"></table>-->
+    <!--      <div class="page">-->
+    <!--        <div>-->
+    <!--          <a class="prev" href="">&lt;&lt;</a>-->
+    <!--          <a class="num" href="">1</a>-->
+    <!--          <span class="current">2</span>-->
+    <!--          <a class="num" href="">3</a>-->
+    <!--          <a class="num" href="">489</a>-->
+    <!--          <a class="next" href="">&gt;&gt;</a>-->
+    <!--        </div>-->
+    <!--      </div>-->
+
+</div>
+<script type="text/html" id="barDemo">
+    <a onclick="member_stop(this,'10001')" href="javascript:;" title="启用">
+        <i class="layui-icon">&#xe601;</i>
+    </a>
+    <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
+        <i class="layui-icon">&#xe640;</i>
+    </a>
+</script>
+<script>
+    var ids;
+    layui.use(['form', 'table', 'laydate'], function () {
+        var table = layui.table
+            , form = layui.form
+            , laydate = layui.laydate;
+        var $ = layui.jquery;
+
+        //日期
+        var nowTime = new Date();
+        var startTime = laydate.render({
+            elem: '#startTime',
+            btns: ['clear', 'now'],
+            max: 'nowTime',//默认最大值为当前日期
+            done: function (value, date) {
+//    		console.log(value); //得到日期生成的值，如：2017-08-18
+//    	    console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+                endTime.config.min = {
+                    year: date.year,
+                    month: date.month - 1,//关键
+                    date: date.date,
+                    hours: date.hours,
+                    minutes: date.minutes,
+                    seconds: date.seconds
+                };
+
+            }
+        })
+        var endTime = laydate.render({
+            elem: '#endTime',
+            btns: ['clear', 'now'],
+            max: 'nowTime',
+            done: function (value, date) {
+//    		console.log(value); //得到日期生成的值，如：2017-08-18
+//    	    console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+                startTime.config.max = {
+                    year: date.year,
+                    month: date.month - 1,//关键
+                    date: date.date,
+                    hours: date.hours,
+                    minutes: date.minutes,
+                    seconds: date.seconds
+                }
+
+            }
+        })
+
+        // //重置
+        // $("#btn-resert").on("click",function(){
+        //     $("#sch-form")[0].reset();
+        //     endTime.config.min='1900-1-1';
+        //     startTime.config.max=endTime.config.max;
+        // });
+
+        // //执行一个laydate实例
+        // laydate.render({
+        //     elem: '#start' //指定元素
+        // });
+        //
+        // //执行一个laydate实例
+        // laydate.render({
+        //     elem: '#end' //指定元素
+        // });
+
+        //监听提交
+        form.on('submit(sreach)', function (data) {
+            keywords(data.field);
+            // layer.alert(JSON.stringify(data.field), {
+            //     title: '最终的提交信息'
+            // });
+            return false;
+        });
+        // //监听是否轮播
+        // form.on('switch(switchTest)', function(obj){
+        //     var id = $(this).attr('id');//为了获取开关所在行的信息，需要绑定上所在行的id
+        //     console.info('id:' + id);
+        //     var checked=$(this).attr("value");
+        //     console.info('lay-text:' + checked);
+        //     if (checked==0){
+        //         isCarousel(id,1)
+        //         layer.msg("id为"+id+"的商品已开启首页轮播");
+        //     }else{
+        //         isCarousel(id,0)
+        //         layer.msg("id为"+id+"的商品已关闭首页轮播");
+        //     }
+        //
+        // });
+
+        var exportData = {};    //定义导出报表的数据
+        keywords();
+
+        function keywords(keywords) {
+            //第一个实例
+            table.render({
+                elem: '#idTest'
+                , url: '/shop/member/ByPage' //数据接口
+                , headers: {"token": "token:PC-c4ca4238a0b923820dcc509a6f75849b-20210412090817473-554972"}
+                , where: keywords
+                , page: true //开启分页
+                , id: 'idTest'
+                , title: '会员表'
+                , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+                , cols: [
+                    [ //表头
+                        {type: 'checkbox', fixed: "left", style: 'height:100px;'}
+                        , {field: 'id', title: 'ID', width: 70, sort: true, style: 'height:100px;'}
+                        , {field: 'phone', title: '手机号', minWidth: 130, width: 130}
+                        , {field: 'name', title: '会员昵称', width: 200}
+                        , {
+                        field: 'portrait', title: '头像', width: 140, templet: function (d) {
+                            if (d.portrait != "")
+                                return '<img src="' + d.portrait + '"  alt="缩略图" style="height: 70px;margin: 0;padding: 0;" onclick="previewImg(this)"/>'
+                        }
+                    }
+                    ]
+                ]
+                , done: function (res, curr, count) {
+                    // 如果是异步请求数据方式，res即为你接口返回的信息。
+                    // 如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+                    // console.log(res);
+                    // 得到当前页码
+                    // console.log(curr);
+                    // 得到数据总量
+                    // console.log(count);
+                    //$(".layui-table-box").find("[data-field='id']").css("display","none");
+                    $("[data-field='status']").each(function () {
+                        $(this).addClass('td-status');
+                    });
+                    $("[data-field='photos']").each(function () {
+                        $(this).addClass('td-manage');
+                    });
+                    pageCurr = curr;
+                    exportData = res.data;
+                }
+            });
+        }
+
+        //表格导出
+        $("#export-id").click(function () {
+            table.exportFile('idTest', exportData, 'xls');
+        });
+
+        //监听表格复选框选择
+        table.on('checkbox(demo)', function (obj) {
+            console.log(obj);
+            var checkStatus = table.checkStatus('idTest')
+                , data = checkStatus.data;
+            ids = $.map(data, function (d) {
+                return d.id;
+            });
+            //layer.alert(ids);
+            console.log(ids)
+        });
+
+
+        var $ = layui.$, active = {
+            getCheckData: function () { //获取选中数据
+                var checkStatus = table.checkStatus('idTest')
+                    , data = checkStatus.data;
+                layer.alert(JSON.stringify(data));
+            }
+            , getCheckLength: function () { //获取选中数目
+                var checkStatus = table.checkStatus('idTest')
+                    , data = checkStatus.data;
+                layer.msg('选中了：' + data.length + ' 个');
+            }
+            , isAll: function () { //验证是否全选
+                var checkStatus = table.checkStatus('idTest');
+                layer.msg(checkStatus.isAll ? '全选' : '未全选')
+            }
+        };
+
+    });
+
+
+    /*用户-停用*/
+    function member_stop(obj, id) {
+        if ($(obj).attr('title') == '启用') {
+            layer.confirm('确认要禁用吗？', function (index) {
+                start_stop(id, 0);
+                $(obj).attr('title', '禁用')
+                $(obj).find('i').html('&#xe62f;');
+
+                $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已禁用');
+                layer.msg('已禁用!', {icon: 5, time: 1000});
+
+            });
+        } else {
+            layer.confirm('确认要启用吗？', function (index) {
+                start_stop(id, 1);
+                $(obj).attr('title', '启用')
+                $(obj).find('i').html('&#xe601;');
+
+                $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
+                layer.msg('已启用!', {icon: 5, time: 1000});
+            });
+        }
+    }
+
+    /*停用-启用ajax*/
+    function start_stop(id, status) {
+        var batchUpdate = {
+            "ids": [id],
+            "status": status
+        }
+        console.log(JSON.stringify(batchUpdate));
+        //发异步把用户状态进行更改
+        $.ajax({
+            url: "/shop/user/batchUpdate"
+            , headers: {
+                "token": "token:PC-c4ca4238a0b923820dcc509a6f75849b-20210412090817473-554972",
+                "Access-Control-Allow-Origin": "*"
+            }
+            , type: "post"
+            , data: JSON.stringify(batchUpdate)
+            , contentType: 'application/json'
+            , success: function (data) {
+                console.log(data);
+                layer.msg(data.msg);
+                location.reload(); //成功后再刷新
+            },
+            error: function (data) {
+                layer.msg(data.msg);
+            }
+        });
+    }
+
+    /*停用-启用ajax*/
+    function batch_update(ids, status) {
+        console.log(status);
+        var batchUpdate = {
+            "ids": ids,
+            "status": status
+        }
+        console.log(JSON.stringify(batchUpdate));
+        //发异步把用户状态进行更改
+        $.ajax({
+            url: "/shop/user/batchUpdate"
+            , headers: {
+                "token": "token:PC-c4ca4238a0b923820dcc509a6f75849b-20210412090817473-554972",
+                "Access-Control-Allow-Origin": "*"
+            }
+            , type: "post"
+            , data: JSON.stringify(batchUpdate)
+            , contentType: 'application/json'
+            , success: function (data) {
+                console.log(data);
+                layer.msg(data.msg);
+                location.reload(); //成功后再刷新
+            },
+            error: function (data) {
+                layer.msg(data.msg);
+            }
+        });
+    }
+
+    /*删除*/
+    function member_del(obj, id) {
+        layer.confirm('确认要删除吗？', function (index) {
+            //发异步删除数据
+            $(obj).parents("tr").remove();
+            layer.msg('已删除!', {icon: 1, time: 1000});
+        });
+    }
+
+    /*更新*/
+    function goods_update(obj, id, clsId) {
+        localStorage.setItem("goodsId", id);
+        localStorage.setItem("clsId", clsId);
+        x_admin_show('修改用户', '/shop/admin/goods_edit');
+    }
+
+    /*批量下架*/
+    function offAll(argument) {
+        layer.confirm('确认要禁用吗？', function (index) {
+            //捉到所有被选中的，发异步进行下架
+            batch_update(ids, 0);
+            layer.msg('禁用成功', {icon: 1});
+        });
+    }
+
+    /*批量上架*/
+    function onAll() {
+        layer.confirm('确认要启用吗？', function (index) {
+            //捉到所有被选中的，发异步进行删除
+            layer.msg(ids.toString());
+            console.log(ids.toString());
+            batch_update(ids, 1)
+            layer.msg('启用成功', {icon: 1});
+        });
+    }
+
+    // layui.use('layer', function(){
+    //     var layer = layui.layer;
+    //     $.ajax({
+    //         url : "/shop/classify/findPageWithCount"
+    //         , headers:{"token":"token:PC-c4ca4238a0b923820dcc509a6f75849b-20210412090817473-554972",
+    //         "Access-Control-Allow-Origin":"*"}
+    //         ,type : "get",
+    //         success : function(data) {
+    //             console.log(data);
+    //             layer.msg(data.msg);
+    //             //location.reload(); //删除成功后再刷新
+    //         },
+    //         error : function(data) {
+    //             layer.msg(data.msg);
+    //         }
+    //     });
+    // });
+
+
+    function delAll(argument) {
+        //var checkStatus = table.checkStatus('idTest');
+        layer.confirm('确认要删除吗？' + ids, function (index) {
+            //捉到所有被选中的，发异步进行删除
+            batch_update(ids, 1);
+            layer.msg('删除成功', {icon: 1});
+            //$(".layui-form-checked").not('.header').parents('tr').remove();
+        });
+    }
+
+    function previewImg(obj) {
+        var img = new Image();
+        img.src = obj.src;
+        //var height = img.height + 50; // 原图片大小
+        //var width = img.width; //原图片大小
+        var imgHtml = "<img src='" + obj.src + "' width='500px' height='500px'/>";
+        //弹出层
+        layer.open({
+            type: 1,
+            shade: 0.8,
+            offset: 'auto',
+            area: [500 + 'px', 550 + 'px'],  // area: [width + 'px',height+'px']  //原图显示
+            shadeClose: true,
+            scrollbar: false,
+            title: "图片预览", //不显示标题
+            content: imgHtml, //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+            cancel: function () {
+                //layer.msg('捕获就是从页面已经存在的元素上，包裹layer的结构', { time: 5000, icon: 6 });
+            }
+        });
+    }
+</script>
+</body>
+
+</html>

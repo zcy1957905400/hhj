@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <base th:href="@{/}">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes"/>
+    <title>name</title>
+    <link href="css/bootstrap.css" th:href="@{static/index/css/bootstrap.css}" rel="stylesheet" type="text/css"/>
+    <link href="css/home.css" th:href="@{static/index/css/home.css}" rel="stylesheet" type="text/css"/>
+
+    <link href="http://at.alicdn.com/t/font_l6a0fwucxvzehfr.css" rel="stylesheet" type="text/css"/>
+    <link href="http://at.alicdn.com/t/font_2426641_lt111qdz5v.css" rel="stylesheet" type="text/css"/>
+
+    <style>
+        .right_c ul li {
+            overflow: hidden;
+            position: relative;
+        }
+    </style>
+
+
+</head>
+
+<body>
+
+<!--top-->
+<div class="top_c">
+    <a href="/shop/index/index" class="iconfont icon-jiantou-copy-copy"></a>
+    <a href="/shop/index/search" class="search">
+        <span class="iconfont icon-sousuo01"></span>
+    </a>
+    <p class="titi">分类</p>
+</div>
+
+<!--&lt;!&ndash;top&ndash;&gt;-->
+<!--<div class="top_c">-->
+<!--	<a href="index.html" class="iconfont icon-jiantou-copy-copy"></a>-->
+<!--    <a href="#" class="shou">-->
+<!--    	<span class="iconfont icon-shoucang"></span>-->
+<!--        <span class="iconfont icon-shoucang1" style="color:#fe6e12;"></span>-->
+<!--    </a>-->
+<!--	<p class="titi">百佳超级市场</p>-->
+<!--</div>-->
+<!--top-->
+<!--<div class="top">-->
+<!--    <div class="container">-->
+<!--        <div class="row">-->
+<!--            <div class="col-xs-1"></div>-->
+<!--            <div class="col-xs-9">-->
+<!--                <a href="#" class="local">-->
+<!--                    <span class="loc_d">山东省济南市...</span>-->
+<!--                    <span class="glyphicon glyphicon-triangle-bottom"></span>-->
+<!--                </a>-->
+<!--            </div>-->
+<!--            <div class="col-xs-2">-->
+<!--                <a href="search.html" class="search">-->
+<!--                    <span class="iconfont icon-sousuo01"></span>-->
+<!--                </a>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--&lt;!&ndash;头部&ndash;&gt;-->
+<!--<div class="pos">-->
+<!--	<div class="container">-->
+<!--    	<div class="row titll">-->
+<!--        	<div class="col-xs-4 sp_s" style="color:#246fc0;">商品</div>-->
+<!--            <div class="col-xs-4 sp_p">评价</div>-->
+<!--            <div class="col-xs-4 sp_j" style="border-right:none;">商家</div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--&lt;!&ndash;头部&ndash;&gt;-->
+<!--<div class="pos">-->
+<!--    <div class="container">-->
+<!--        <div class="row titll">-->
+<!--            <div class="col-xs-4 sp_s" style="color:#246fc0;">商品</div>-->
+<!--            <div class="col-xs-4 sp_p">评价</div>-->
+<!--            <div class="col-xs-4 sp_j" style="border-right:none;">商家</div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--头部-->
+<div class="pos">
+    <div class="container">
+        <div class="row titll">
+            <div class="col-xs-4 sp_s" style="color:#246fc0;"></div>
+            <div class="col-xs-4 sp_p"></div>
+            <div class="col-xs-4 sp_j" style="border-right:none;"></div>
+        </div>
+    </div>
+</div>
+
+<!--列表-->
+<div>
+    <div class="lie">
+        <div class="left_c" id="left">
+            <ul>
+                <li style="background:#fff;"><a href="#" style="color:#246fc0;">生活食品</a></li>
+                <li><a href="#">饮料·水</a></li>
+                <li><a href="#">酒类</a></li>
+                <li><a href="#">休闲零食</a></li>
+                <li><a href="#">厨房调味</a></li>
+                <li><a href="#">粮油副食</a></li>
+            </ul>
+        </div>
+        <div class="right_c" id="right">
+
+            <!--<div class="sp_p_business">-->
+                <!--<div class="col-xs-12" style="padding-left: 10px;margin: auto 0">-->
+                    <!--<a href="business.html">-->
+                        <!--<img src="images/sp.jpg">-->
+                    <!--</a>-->
+                <!--</div>-->
+
+                <!--<div class="text_p" style="padding-top: 10px">-->
+                    <!--<a href="commodity.html">-->
+                        <!--<p style="font-size: 14px;color: #5e5e5e;margin-left: 10px;padding-top: 10px">-->
+                            <!--康师傅香辣牛肉面-->
+                            <!--<i style="font-size: 12px;">规格:1桶</i>-->
+                        <!--</p>-->
+                    <!--</a>-->
+
+                    <!--<p class="link-top" style="margin-top: 5px"></p>-->
+                    <!--<span class="yue">提货时间:3月1日<em style="float: right;color: #eea236">限售200份</em></span>-->
+                    <!--<span class="yue">-->
+                                    <!--<em class="em_s" style="font-size: 20px;color: #ec3535">￥200</em>-->
+                                    <!--<button class="btn  btn-danger btn-xs"-->
+                                            <!--style="float: right;display: none;">加入购物车</button>-->
+                                    <!--<div class="xuan-business">-->
+                                        <!--<span id="min_1" class="iconfont icon-jianshao " onclick="les(1)"></span>-->
+                                        <!--<input id="text_box_1" name="" type="text" value="1"-->
+                                               <!--style="width: 30px;text-align:center;"/>-->
+                                        <!--<span id="add_1" class="iconfont icon-tubiao225" onclick="add(1)"></span>-->
+                                    <!--</div>-->
+                                <!--</span>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="sp_p_business">-->
+                <!--<div>-->
+                    <!--<div class="col-xs-12" style="padding-left: 10px;margin: auto 0">-->
+                        <!--<a href="business.html">-->
+                            <!--<img src="images/sp.jpg">-->
+                        <!--</a>-->
+                    <!--</div>-->
+
+                    <!--<div class="text_p" style="padding-top: 10px">-->
+                        <!--<a href="commodity.html">-->
+                            <!--<p style="font-size: 14px;color: #5e5e5e;margin-left: 10px;padding-top: 10px">-->
+                                <!--康师傅香辣牛肉面-->
+                                <!--<i style="font-size: 12px;">规格:1桶</i>-->
+                            <!--</p>-->
+                        <!--</a>-->
+                        <!--<div>-->
+                            <!--<p class="link-top" style="margin-top: 5px"></p>-->
+                            <!--<span class="yue">提货时间:3月1日<em style="float: right;color: #eea236">限售200份</em></span>-->
+                            <!--<span class="yue">-->
+                                    <!--<em class="em_s" style="font-size: 20px;color: #ec3535">￥200</em>-->
+                                    <!--<button class="btn  btn-danger btn-xs"-->
+                                            <!--style="float: right;display: none;">加入购物车</button>-->
+                                    <!--<div class="xuan-business">-->
+                                        <!--<span id="min_2" class="iconfont icon-jianshao " onclick="les(2)"></span>-->
+                                        <!--<input id="text_box_2" name="" type="text" value="1"-->
+                                               <!--style="width: 30px;text-align:center;"/>-->
+                                        <!--<span id="add_2" class="iconfont icon-tubiao225" onclick="add(2)"></span>-->
+                                    <!--</div>-->
+                                <!--</span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="sp_p_business">-->
+                <!--<div>-->
+                    <!--<div class="col-xs-12" style="padding-left: 10px;margin: auto 0">-->
+                        <!--<a href="commodity.html">-->
+                            <!--<img src="images/sp.jpg">-->
+                        <!--</a>-->
+                    <!--</div>-->
+
+                    <!--<div class="text_p" style="padding-top: 10px">-->
+                        <!--<a href="commodity.html">-->
+                            <!--<p style="font-size: 14px;color: #5e5e5e;margin-left: 10px;padding-top: 10px">-->
+                                <!--康师傅香辣牛肉面-->
+                                <!--<i style="font-size: 12px;">规格:1桶</i>-->
+                            <!--</p>-->
+                        <!--</a>-->
+                        <!--<div>-->
+                            <!--<p class="link-top" style="margin-top: 5px"></p>-->
+                            <!--<span class="yue">提货时间:3月1日<em style="float: right;color: #eea236">限售200份</em></span>-->
+                            <!--<span class="yue">-->
+                                    <!--<em class="em_s" style="font-size: 20px;color: #ec3535">￥200</em>-->
+                                    <!--<button class="btn  btn-danger btn-xs"-->
+                                            <!--style="float: right;display: none;">加入购物车</button>-->
+                                    <!--<div class="xuan-business">-->
+                                        <!--<span id="min_3" class="iconfont icon-jianshao " onclick="les(3)"></span>-->
+                                        <!--<input id="text_box_3" name="" type="text" value="1"-->
+                                               <!--style="width: 30px;text-align:center;"/>-->
+                                        <!--<span id="add_3" class="iconfont icon-tubiao225" onclick="add(3)"></span>-->
+                                    <!--</div>-->
+                                <!--</span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="sp_p_business">-->
+                <!--<div>-->
+                    <!--<div class="col-xs-12" style="padding-left: 10px;margin: auto 0">-->
+                        <!--<a href="business.html">-->
+                            <!--<img src="images/sp.jpg">-->
+                        <!--</a>-->
+                    <!--</div>-->
+
+                    <!--<div class="text_p" style="padding-top: 10px">-->
+                        <!--<a href="commodity.html">-->
+                            <!--<p style="font-size: 14px;color: #5e5e5e;margin-left: 10px;padding-top: 10px">-->
+                                <!--康师傅香辣牛肉面-->
+                                <!--<i style="font-size: 12px;">规格:1桶</i>-->
+                            <!--</p>-->
+                        <!--</a>-->
+                        <!--<div>-->
+                            <!--<p class="link-top" style="margin-top: 5px"></p>-->
+                            <!--<span class="yue">提货时间:3月1日<em style="float: right;color: #eea236">限售200份</em></span>-->
+                            <!--<span class="yue">-->
+                                    <!--<em class="em_s" style="font-size: 20px;color: #ec3535">￥200</em>-->
+                                    <!--<button class="btn  btn-danger btn-xs"-->
+                                            <!--style="float: right;display: none;">加入购物车</button>-->
+                                    <!--<div class="xuan-business">-->
+                                        <!--<span id="min_4" class="iconfont icon-jianshao " onclick="les(4)"></span>-->
+                                        <!--<input id="text_box_4" name="" type="text" value="1"-->
+                                               <!--style="width: 30px;text-align:center;"/>-->
+                                        <!--<span id="add_4" class="iconfont icon-tubiao225" onclick="add(4)"></span>-->
+                                    <!--</div>-->
+                                <!--</span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="sp_p_business">-->
+                <!--<div>-->
+                    <!--<div class="col-xs-12" style="padding-left: 10px;margin: auto 0">-->
+                        <!--<a href="business.html">-->
+                            <!--<img src="images/sp.jpg">-->
+                        <!--</a>-->
+                    <!--</div>-->
+
+                    <!--<div class="text_p" style="padding-top: 10px">-->
+                        <!--<a href="business.html">-->
+                            <!--<p style="font-size: 14px;color: #5e5e5e;margin-left: 10px;padding-top: 10px">-->
+                                <!--康师傅香辣牛肉面-->
+                                <!--<i style="font-size: 12px;">规格:1桶</i>-->
+                            <!--</p>-->
+                        <!--</a>-->
+                        <!--<div>-->
+                            <!--<p class="link-top" style="margin-top: 5px"></p>-->
+                            <!--<span class="yue">提货时间:3月1日<em style="float: right;color: #eea236">限售200份</em></span>-->
+                            <!--<span class="yue">-->
+                                    <!--<em class="em_s" style="font-size: 20px;color: #ec3535">￥200</em>-->
+                                    <!--<button class="btn  btn-danger btn-xs" style="float: right;">加入购物车</button>-->
+                                    <!--<div class="xuan-business" style="display: none;">-->
+                                        <!--<span id="min_5" class="iconfont icon-jianshao " onclick="les(5)"></span>-->
+                                        <!--<input id="text_box_5" name="" type="text" value="1"-->
+                                               <!--style="width: 30px;text-align:center;"/>-->
+                                        <!--<span id="add_5" class="iconfont icon-tubiao225" onclick="add(5)"></span>-->
+                                    <!--</div>-->
+                                <!--</span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+
+        </div>
+    </div>
+</div>
+
+
+<!--footer-->
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-3">
+                <a href="/shop/index/index" class="dao">
+                    <i class="iconfont icon-home"></i>
+                    <span class="nav_ti">首页</span>
+                </a>
+            </div>
+            <div class="col-xs-3">
+                <a href="/shop/index/business" class="dao">
+                    <i class="iconfont icon-app" style="color:#246fc0;"></i>
+                    <span class="nav_ti" style="color:#246fc0;">分类</span>
+                </a>
+            </div>
+            <div class="col-xs-3">
+                <a href="/shop/index/shopcart" class="dao">
+                    <i class="iconfont icon-cart"></i>
+                    <span class="nav_ti" >购物车</span>
+                </a>
+            </div>
+            <div class="col-xs-3">
+                <a href="/shop/index/personal" class="dao">
+                    <i class="iconfont icon-account"></i>
+                    <span class="nav_ti">个人中心</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/jquery.min.js" th:src="@{static/index/js/jquery.min.js}" type="text/javascript"></script>
+<script type="text/javascript" src="js/iscroll.js" th:src="@{static/index/js/iscroll.js}"></script>
+<script>
+    var w_he = $(window).height();
+    // alert(w_he)
+    var t_he = $(".top_c").height();
+    var f_he = $(".footer").height();
+    var p_he = $(".pos").height();
+    var l_he = w_he - t_he - f_he - p_he;
+    // alert(l_he)
+    var m_to = t_he + p_he;
+    $(".left_c,.right_c").css({marginBottom:f_he});
+    $(".lie,.ping,.shop").css({marginTop: m_to});
+    var mid = sessionStorage.getItem('mid');
+    var token = sessionStorage.getItem('token');
+    function getFormatDate(){
+        var nowDate = new Date();
+        var year = nowDate.getFullYear();
+        var month = nowDate.getMonth() + 1 < 10 ? "0" + (nowDate.getMonth() + 1) : nowDate.getMonth() + 1;
+        var date = nowDate.getDate() < 10 ? "0" + nowDate.getDate() : nowDate.getDate();
+        var hour = nowDate.getHours()< 10 ? "0" + nowDate.getHours() : nowDate.getHours();
+        var minute = nowDate.getMinutes()< 10 ? "0" + nowDate.getMinutes() : nowDate.getMinutes();
+        var second = nowDate.getSeconds()< 10 ? "0" + nowDate.getSeconds() : nowDate.getSeconds();
+        return year + "-" + month + "-" + date+" "+"16:00:00";
+    }
+    $.ajax({
+        url: "/shop/classify/ByPage1"
+        , headers: {
+            "token": token,
+            "Access-Control-Allow-Origin": "*"
+        }
+        , type: "get"
+        , data: {"page": 1}
+        , contentType: 'application/json'
+        , success: function (data) {
+            // sessionStorage.setItem('token', 'token:PC-c4ca4238a0b923820dcc509a6f75849b-20210412090817473-554972');
+            // sessionStorage.setItem('mid', '1002');
+            console.log(data)
+            $('#left').empty();   //清空resText里面的所有内容
+            var html = '<ul>';
+            $.each(data.data, function (commentIndex, comment) {
+
+                console.log(comment)
+                if (commentIndex == 0) {
+                    showGoods(comment.id);
+                    html += '<li style="background:#fff;"><a href="javascript:showGoods(' + comment.id + ');" style="color:#246fc0;" >' + comment.clsName + '</a></li>\n'
+                } else {
+                    html += '<li><a href="javascript:showGoods(' + comment.id + ');" >' + comment.clsName + '</a></li>\n'
+                }
+
+
+            });
+            html += '</ul>'
+            $('#left').html(html);
+        }
+    });
+    var str = getFormatDate();
+    function showGoods(id) {
+        $(".left_c li").click(function(){
+            $('.left_c li a').css('color','#484848');
+            $(this).css({background:"#fff"}).siblings().css({background:"transparent"});
+            $(this).find('a').css('color','#246fc0');
+        });
+        $.ajax({
+            url: "/shop/goods/findGoodsWithClassify"
+            , headers: {
+                "token": token,
+                "Access-Control-Allow-Origin": "*"
+            }
+            , type: "get"
+            , data: {"clsid": id,"mid":mid}
+            , contentType: 'application/json'
+            , success: function (data) {
+                // sessionStorage.setItem('token', 'token:PC-c4ca4238a0b923820dcc509a6f75849b-20210412090817473-554972');
+                // sessionStorage.setItem('mid', '1002');
+                console.log(data)
+                $('#right').empty();   //清空resText里面的所有内容
+                var html = '';
+                $.each(data.data, function (commentIndex, comment) {
+
+                    console.log(comment)
+                    if (comment.number == null) {
+                        html += '<div class="sp_p_business">\n' +
+                            '                <div class="col-xs-12" style="padding-left: 10px;margin: auto 0">\n' +
+                            '                    <a href="javascript:;" onclick="commodity('+comment.id+')">\n' +
+                            '                        <img src="' + comment.photos + '">\n' +
+                            '                    </a>\n' +
+                            '                </div>\n' +
+                            '\n' +
+                            '                <div class="text_p" style="padding-top: 10px">\n' +
+                            '                    <a href="javascript:;" onclick="commodity('+comment.id+')">\n' +
+                            '                        <p style="font-size: 14px;color: #5e5e5e;margin-left: 10px;padding-top: 10px">' + comment.goodName +
+                            '                            <i style="font-size: 12px;">规格:' + comment.spec + '</i>\n' +
+                            '                        </p>\n' +
+                            '                    </a>\n' +
+                            '\n' +
+                            '                    <p class="link-top" style="margin-top: 5px"></p>\n' +
+                            '                    <span class="yue">提货时间:' + getFormatDate() + '<em style="float: right;color: #eea236">库存' + comment.inventory + '份</em></span>\n' +
+                            '                    <span class="yue">\n' +
+                            '                                    <em class="em_s" style="font-size: 20px;color: #ec3535">￥' + comment.price + '</em>\n' +
+                            '                                    <button class="btn  btn-danger btn-xs" style="float: right;" id="btn_' + comment.id + '" onclick="addbtn(' + comment.id + ','+comment.inventory+')">加入购物车</button>\n' +
+                            '                </div>\n' +
+                            '            </div>';
+                    } else {
+                        html += '<div class="sp_p_business">\n' +
+                            '                <div class="col-xs-12" style="padding-left: 10px;margin: auto 0">\n' +
+                            '                    <a href="javascript:;" onclick="commodity('+comment.id+')">\n' +
+                            '                        <img src="' + comment.photos + '">\n' +
+                            '                    </a>\n' +
+                            '                </div>\n' +
+                            '\n' +
+                            '                <div class="text_p" style="padding-top: 10px">\n' +
+                            '                    <a href="javascript:;" onclick="commodity('+comment.id+')">\n' +
+                            '                        <p style="font-size: 14px;color: #5e5e5e;margin-left: 10px;padding-top: 10px">' + comment.goodName +
+                            '                            <i style="font-size: 12px;">规格:' + comment.spec + '</i>\n' +
+                            '                        </p>\n' +
+                            '                    </a>\n' +
+                            '\n' +
+                            '                    <p class="link-top" style="margin-top: 5px"></p>\n' +
+                            '                    <span class="yue">提货时间:' + getFormatDate() + '<em style="float: right;color: #eea236">库存' + comment.inventory + '份</em></span>\n' +
+                            '                    <span class="yue">\n' +
+                            '                          <em class="em_s" style="font-size: 20px;color: #ec3535">￥' + comment.price + '</em>\n' +
+                            '                            <div class="xuan-business" style="">\n' +
+                            '                               <span id="min_' + comment.id + '" class="iconfont icon-jianshao " onclick="les(' + comment.id + ')" ></span>\n' +
+                            '                               <input id="text_box_' + comment.id + '" name="" disabled="disabled" type="text" value="' + comment.number + '" style="width: 30px;text-align:center;"/>\n' +
+                            '                               <span id="add_' + comment.id + '" class="iconfont icon-tubiao225" onclick="add(' + comment.id + ','+comment.inventory+')"></span>\n' +
+                            '                        </div>\n' +
+                            '                     </span>\n' +
+                            '                </div>\n' +
+                            '            </div>';
+
+                    }
+                });
+                $('#right').html(html);
+            }
+        });
+    }
+        var Scroll = new iScroll('left', {
+            hScrollbar: false,
+            vScrollbar: true,
+            hScroll: false,
+            vScroll: true,
+            useTransform: false
+        });
+        var Scroll = new iScroll('right', {
+            hScrollbar: false,
+            vScrollbar: true,
+            hScroll: false,
+            vScroll: true,
+            useTransform: false
+        });
+    $(".left_c li").click(function(){
+        $('.left_c li a').css('color','#484848');
+        $(this).css({background:"#fff"}).siblings().css({background:"transparent"});
+        $(this).find('a').css('color','#246fc0');
+    });
+
+    function commodity(id){
+        sessionStorage.setItem("goodsId",id);
+        sessionStorage.setItem('token',token);
+        window.location="/shop/index/commodity";
+    }
+</script>
+<script src="js/bootstrap.min.js" th:src="@{static/index/js/bootstrap.min.js}" type="text/javascript"></script>
+<script src="js/index.js" th:src="@{static/index/js/index.js}" type="text/javascript"></script>
+
+
+</body>
+</html>

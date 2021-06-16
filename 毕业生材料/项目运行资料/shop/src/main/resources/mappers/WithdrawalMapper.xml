@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhj.shop.repository.WithdrawalRepository">
+
+    <resultMap id="BaseResultMap" type="com.hhj.shop.entity.Withdrawal">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="u_id" jdbcType="INTEGER" property="uId"/>
+        <result column="amount" jdbcType="DECIMAL" property="amount"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="createtime" jdbcType="VARCHAR" property="createtime"/>
+    </resultMap>
+
+    <resultMap id="BaseResult" type="com.hhj.shop.dto.WithdrawalDTO">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="u_id" jdbcType="INTEGER" property="uId"/>
+        <result column="amount" jdbcType="DECIMAL" property="amount"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="createtime" jdbcType="VARCHAR" property="createtime"/>
+        <result column="uname" jdbcType="VARCHAR" property="uname"/>
+    </resultMap>
+
+    <resultMap id="ResultMap" type="com.hhj.shop.dto.StatisticsDTO">
+        <id column="createdate" jdbcType="VARCHAR" property="createdate"/>
+        <result column="total" jdbcType="INTEGER" property="total"/>
+        <result column="value" jdbcType="DECIMAL" property="value"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+		id, u_id, amount, status,createtime
+	</sql>
+
+
+    <delete id="delete" parameterType="java.lang.Integer">
+		delete from withdrawal
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+
+
+    <insert id="insert" parameterType="com.hhj.shop.entity.Withdrawal">
+		insert into withdrawal (id, u_id, amount,
+		status,createtime)
+		values (#{id,jdbcType=INTEGER}, #{uId,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL},
+		#{status,jdbcType=INTEGER},#{createtime,jdbcType=VARCHAR})
+	</insert>
+
+
+    <insert id="insertDynamic" parameterType="com.hhj.shop.entity.Withdrawal">
+        insert into withdrawal
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="uId != null">
+                u_id,
+            </if>
+            <if test="amount != null">
+                amount,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="createtime != null">
+                createtime,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="uId != null">
+                #{uId,jdbcType=INTEGER},
+            </if>
+            <if test="amount != null">
+                #{amount,jdbcType=DECIMAL},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createtime != null">
+                #{createtime,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+
+    <update id="updateDynamic" parameterType="com.hhj.shop.entity.Withdrawal">
+        update withdrawal
+        <set>
+            <if test="uId != null">
+                u_id = #{uId,jdbcType=INTEGER},
+            </if>
+            <if test="amount != null">
+                amount = #{amount,jdbcType=DECIMAL},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createtime != null">
+                createtime = #{createtime,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="batchUpdate" parameterType="java.util.List">
+        update withdrawal
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="status =case" suffix="end,">
+                <foreach collection="withdrawalList" item="item" index="index">
+                    when id=#{item.id} then #{item.status}
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach collection="withdrawalList" index="index" item="item" separator="," open="(" close=")">
+            #{item.id,jdbcType=INTEGER}
+        </foreach>
+    </update>
+
+
+    <update id="update" parameterType="com.hhj.shop.entity.Withdrawal">
+		update withdrawal
+		set u_id = #{uId,jdbcType=INTEGER},
+		amount = #{amount,jdbcType=DECIMAL},
+		status = #{status,jdbcType=INTEGER},
+		createtime = #{createtime,jdbcType=VARCHAR},
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+
+    <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from withdrawal
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectByUId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from withdrawal
+        where u_id = #{uId,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectByWithdrawalSales" parameterType="java.lang.String" resultMap="ResultMap">
+        select FROM_UNIXTIME(createtime,'%Y/%m/%d') as createdate,sum(amount) as value
+        FROM `withdrawal`
+		where createtime BETWEEN #{pastTimeStr,jdbcType=VARCHAR} and #{currenttimeStr,jdbcType=VARCHAR}
+		GROUP BY createdate;
+	</select>
+
+
+    <sql id="findPageWithWhere">
+        <where>1=1
+            <if test="id != null">
+                and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="uId != null">
+                and u_id = #{uId,jdbcType=INTEGER}
+            </if>
+            <if test="amount != null">
+                and amount = #{amount,jdbcType=DECIMAL}
+            </if>
+            <if test="status != null">
+                and status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="createtime != null">
+                createtime = #{createtime,jdbcType=VARCHAR},
+            </if>
+        </where>
+    </sql>
+
+
+    <select id="findPageWithResult" parameterType="com.hhj.shop.dto.PageDTO" resultMap="BaseResult">
+        SELECT w.*,u.name as uname FROM `withdrawal` as w,user as u
+        where w.u_id=u.id
+        <if test="keywords != null and keywords != ''">and u.name like #{keywords}</if>
+        <if test="startTime != null and startTime != '' and endTime != null and endTime != ''">and w.createtime BETWEEN
+            #{startTime} AND #{endTime}
+        </if>
+        ORDER BY w.createtime desc limit #{page},#{limit}
+    </select>
+
+
+    <select id="findPageWithCount" parameterType="com.hhj.shop.dto.PageDTO" resultType="Integer">
+        SELECT count(w.id)
+        FROM `withdrawal` as w,user as u
+        where w.u_id=u.id
+        <if test="keywords != null and keywords != ''">and u.name like #{keywords}</if>
+        <if test="startTime != null and startTime != '' and endTime != null and endTime != ''">and w.createtime BETWEEN
+            #{startTime} AND #{endTime}
+        </if>
+    </select>
+
+</mapper>

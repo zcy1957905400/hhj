@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <base th:href="@{/}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" />
+    <title>商品搜索</title>
+
+    <link href="css/bootstrap.css" th:href="@{static/index/css/bootstrap.css}" rel="stylesheet" type="text/css" />
+    <link href="css/home.css" th:href="@{static/index/css/home.css}" rel="stylesheet" type="text/css" />
+
+<link href="http://at.alicdn.com/t/font_l6a0fwucxvzehfr.css" rel="stylesheet" type="text/css" />
+
+
+</head>
+
+<body>
+
+<!--top-->
+<div class="top_c">
+	<div class="container">
+    	<a href="javascript:history.back(-1);" class="iconfont icon-jiantou-copy-copy" style="margin-left:0; margin-right:0.429em;"></a>
+    	<div class="ss_c">
+            <form>
+            <input type="text" name="keywords" size="60" maxlength="60" style="color:#ccc" value="请输入您需要搜索的内容" onfocus="if(this.value=='请输入您需要搜索的内容'){this.value=''};this.style.color='black';" onblur="if(this.value==''||this.value=='请输入您需要搜索的内容'){this.value='请输入您需要搜索的内容';this.style.color='#ccc';}">
+            </form>
+            <a href="javascript:;" onclick="search1()">
+                <i class="iconfont icon-sousuo01"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!--历史-->
+
+<div class="product" style="margin-top:4em; margin-bottom:1.429em;" id="product">
+    <div>
+        <div class="sp_p_index">
+            <div>
+                <div class="col-xs-12" style="padding-left: 10px;margin: auto 0">
+                    <a href="commodity.html">
+                        <img src="images/sp.jpg">
+                    </a>
+                </div>
+
+                <div class="text_p" style="padding-top: 10px">
+                    <a href="commodity.html">
+                        <p style="font-size: 16px;color: #5e5e5e;margin-left: 10px;padding-top: 10px" >康师傅香辣牛肉面 <i style="font-size: 16px;">规格:1桶</i></p>
+                    </a>
+                    <div>
+                        <p class="link-top" style="margin-top: 5px"></p>
+                        <span class="yue" >提货时间:3月1日<em style="float: right;color: #eea236">限售200份</em></span>
+                        <span class="yue">
+                            <em class="em_s" style="font-size: 20px;color: #ec3535">￥200</em>
+                            <button class="btn  btn-danger btn-xs" style="float: right;" >加入购物车</button>
+                            <div class="xuan-business" style="display: none;">
+                                <span id="min_1" class="iconfont icon-jianshao " onclick="les(1)" ></span>
+                                <input id="text_box_1" name="" type="text" value="1" style="width: 30px;text-align:center;"/>
+                                <span id="add_1" class="iconfont icon-tubiao225" onclick="add(1)"></span>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="js/jquery.min.js" th:src="@{static/index/js/jquery.min.js}" type="text/javascript"></script>
+<script type="text/javascript" src="js/iscroll.js" th:src="@{static/index/js/iscroll.js}"></script>
+<script>
+    function getFormatDate(){
+        var nowDate = new Date();
+        var year = nowDate.getFullYear();
+        var month = nowDate.getMonth() + 1 < 10 ? "0" + (nowDate.getMonth() + 1) : nowDate.getMonth() + 1;
+        var date = nowDate.getDate() < 10 ? "0" + nowDate.getDate() : nowDate.getDate();
+        var hour = nowDate.getHours()< 10 ? "0" + nowDate.getHours() : nowDate.getHours();
+        var minute = nowDate.getMinutes()< 10 ? "0" + nowDate.getMinutes() : nowDate.getMinutes();
+        var second = nowDate.getSeconds()< 10 ? "0" + nowDate.getSeconds() : nowDate.getSeconds();
+        return year + "-" + month + "-" + date+" "+"16:00:00";
+    }
+
+    var str = getFormatDate();
+    var  mid= {
+        "mid":sessionStorage.getItem('mid'),
+        "keywords":""
+    };
+    var mid1=sessionStorage.getItem('mid');
+    //alert(mid1);
+    ajaxsearch();
+    function search1() {
+        var x=$("form").serializeArray();
+        $.each(x, function(i, field){
+            mid[field.name] = field.value;
+        });
+        ajaxsearch();
+    }
+
+    function ajaxsearch() {
+        $.ajax({
+            url : "/shop/goods/findGoods"
+            , headers:{"token":"token:PC-c4ca4238a0b923820dcc509a6f75849b-20210412090817473-554972",
+                "Access-Control-Allow-Origin":"*"}
+            ,type : "get"
+            ,data:mid
+            ,contentType: 'application/json'
+            ,success: function(data){
+                sessionStorage.setItem('token','token:PC-c4ca4238a0b923820dcc509a6f75849b-20210412090817473-554972');
+                sessionStorage.setItem('mid','1002');
+                console.log(data)
+                $('#product').empty();   //清空resText里面的所有内容
+                var html = '';
+                $.each(data.data, function(commentIndex, comment){
+
+                    console.log(comment)
+                    if (comment.number==null){
+                        html += '<div class="sp_p_index">\n' +
+                            '        <div>\n' +
+                            '            <div class="col-xs-12" style="padding-left: 10px;margin: auto 0">\n' +
+                            '                <a href="business.html">\n' +
+                            '                    <img src="'+comment.photos+'">\n' +
+                            '                </a>\n' +
+                            '            </div>\n' +
+                            '\n' +
+                            '            <div class="text_p" style="padding-top: 10px">\n' +
+                            '                <a href="business.html">\n' +
+                            '                    <p style="font-size: 16px;color: #5e5e5e;margin-left: 10px;padding-top: 10px" >'+comment.goodName+' <i style="font-size: 16px;">'+comment.spec+'</i></p>\n' +
+                            '                </a>\n' +
+                            '                <div>\n' +
+                            '                    <p class="link-top" style="margin-top: 5px"></p>\n' +
+                            '                    <span class="yue" >提货时间:'+getFormatDate()+'<em style="float: right;color: #eea236">库存'+comment.inventory+'份</em></span>\n' +
+                            '                    <span class="yue">\n' +
+                            '                        <em class="em_s" style="font-size: 20px;color: #ec3535">￥'+comment.price+'</em>\n' +
+                            '                        <button class="btn  btn-danger btn-xs" style="float: right;" id="btn_'+comment.id+'" onclick="addbtn('+comment.id+')">加入购物车</button>\n' +
+                            '                    </span>\n' +
+                            '                </div>\n' +
+                            '            </div>\n' +
+                            '        </div>\n' +
+                            '    </div>';
+                    }else{
+                        html += '<div class="sp_p_index">\n' +
+                            '        <div>\n' +
+                            '            <div class="col-xs-12" style="padding-left: 10px;margin: auto 0">\n' +
+                            '                <a href="business.html">\n' +
+                            '                    <img src="'+comment.photos+'">\n' +
+                            '                </a>\n' +
+                            '            </div>\n' +
+                            '\n' +
+                            '            <div class="text_p" style="padding-top: 10px">\n' +
+                            '                <a href="business.html">\n' +
+                            '                    <p style="font-size: 16px;color: #5e5e5e;margin-left: 10px;padding-top: 10px" >'+comment.goodName+' <i style="font-size: 16px;">规格:'+comment.spec+'</i></p>\n' +
+                            '                </a>\n' +
+                            '                <div>\n' +
+                            '                    <p class="link-top" style="margin-top: 5px"></p>\n' +
+                            '                    <span class="yue" >提货时间:'+getFormatDate()+'<em style="float: right;color: #eea236">库存'+comment.inventory+'份</em></span>\n' +
+                            '                    <span class="yue">\n' +
+                            '                        <em class="em_s" style="font-size: 20px;color: #ec3535">￥'+comment.price+'</em>\n' +
+                            '                        <div class="xuan-business" style="">\n' +
+                            '                            <span id="min_'+comment.id+'" class="iconfont icon-jianshao " onclick="les('+comment.id+')" ></span>\n' +
+                            '                            <input id="text_box_'+comment.id+'" name="" disabled="disabled" type="text" value="'+comment.number+'" style="width: 30px;text-align:center;"/>\n' +
+                            '                            <span id="add_'+comment.id+'" class="iconfont icon-tubiao225" onclick="add('+comment.id+')"></span>\n' +
+                            '                        </div>\n' +
+                            '                    </span>\n' +
+                            '                </div>\n' +
+                            '            </div>\n' +
+                            '        </div>\n' +
+                            '    </div>';
+                    }
+
+                });
+                $('#product').html(html);
+            }
+        });
+    }
+
+    // var w_he=$(window).height();
+    // // var f_he=$(".footer").height();
+    // // var l_he=w_he-f_he;
+    // $(".product").css({height:w_he});
+    var Scroll = new iScroll('product',{hScrollbar:false, vScrollbar:false,hScroll:true,vScroll:false,});
+
+
+</script>
+
+<script src="js/bootstrap.min.js" th:src="@{static/index/js/bootstrap.min.js}"  type="text/javascript"></script>
+<script src="js/index.js" th:src="@{static/index/js/index.js}" type="text/javascript"></script>
+
+
+
+
+</body>
+</html>

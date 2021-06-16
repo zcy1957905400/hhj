@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhj.shop.repository.UserRepository">
+
+    <resultMap id="BaseResultMap" type="com.hhj.shop.entity.User">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="phone" jdbcType="CHAR" property="phone"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="pwd" jdbcType="VARCHAR" property="password"/>
+        <result column="portrait" jdbcType="VARCHAR" property="portrait"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="leave_amount" jdbcType="DECIMAL" property="leaveAmount"/>
+    </resultMap>
+
+    <resultMap id="BaseResult" type="com.hhj.shop.dto.UserDTO">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="phone" jdbcType="CHAR" property="phone"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="pwd" jdbcType="VARCHAR" property="password"/>
+        <result column="portrait" jdbcType="VARCHAR" property="portrait"/>
+        <result column="detailed" jdbcType="VARCHAR" property="detailed"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="regId" jdbcType="INTEGER" property="regId"/>
+        <result column="add_name" jdbcType="VARCHAR" property="add_name"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+		id, phone, name, pwd, portrait, type, leave_amount,status
+	</sql>
+
+    <sql id="Base_Column">
+		id, phone, name, portrait, type, leave_amount,status
+	</sql>
+
+
+    <delete id="delete" parameterType="java.lang.Integer">
+		delete from user
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+
+
+    <insert id="insert" parameterType="com.hhj.shop.entity.User">
+		insert into user (phone, name,
+		pwd, portrait, type,
+		leave_amount,status)
+		values (#{phone,jdbcType=CHAR}, #{name,jdbcType=VARCHAR},
+		#{password,jdbcType=VARCHAR}, #{portrait,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER},
+		#{leaveAmount,jdbcType=DECIMAL} ,#{status,jdbcType=INTEGER})
+	</insert>
+
+
+    <insert id="insertDynamic" parameterType="com.hhj.shop.entity.User">
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="password != null">
+                pwd,
+            </if>
+            <if test="portrait != null">
+                portrait,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="leaveAmount != null">
+                leave_amount,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=CHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{pwd,jdbcType=VARCHAR},
+            </if>
+            <if test="portrait != null">
+                #{portrait,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="leaveAmount != null">
+                #{leaveAmount,jdbcType=DECIMAL},
+            </if>
+        </trim>
+    </insert>
+
+
+    <update id="updateDynamic" parameterType="com.hhj.shop.entity.User">
+        update user
+        <set>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=CHAR},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                pwd = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="portrait != null">
+                portrait = #{portrait,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                type = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="leaveAmount != null">
+                leave_amount = #{leaveAmount,jdbcType=DECIMAL},
+            </if>
+        </set>
+        where 1=1
+            <if test="id != null">
+                and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="phone != null">
+                and phone = #{phone,jdbcType=CHAR}
+            </if>
+    </update>
+
+    <update id="batchUpdate" parameterType="java.util.List">
+        update user
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="status =case" suffix="end,">
+                <foreach collection="userList" item="item" index="index">
+                    when id=#{item.id} then #{item.status}
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach collection="userList" index="index" item="item" separator="," open="(" close=")">
+            #{item.id,jdbcType=INTEGER}
+        </foreach>
+    </update>
+
+
+    <update id="update" parameterType="com.hhj.shop.entity.User">
+		update user
+		set phone = #{phone,jdbcType=CHAR},
+		name = #{name,jdbcType=VARCHAR},
+		pwd = #{password,jdbcType=VARCHAR},
+		portrait = #{portrait,jdbcType=VARCHAR},
+		status = #{status,jdbcType=INTEGER},
+		type = #{type,jdbcType=INTEGER},
+		leave_amount = #{leaveAmount,jdbcType=DECIMAL}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+
+    <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		SELECT u.id as id, u.phone as phone, u.name as name, u.portrait as portrait,sum(c.amount) as leave_amount  FROM `commission` as c,`order` as o,user as u
+		where c.order_id=o.id and o.a_id=u.id and c.type=0 and u.id = #{id,jdbcType=INTEGER}
+	</select>
+
+    <select id="selectoId" parameterType="java.lang.String" resultMap="BaseResultMap">
+		SELECT u.id as id,u.leave_amount as leave_amount FROM `user` as u,`order` as o
+		where o.a_id=u.id and o.id = #{oid,jdbcType=INTEGER}
+	</select>
+
+    <select id="selectByLeaveAmount" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		SELECT id,leave_amount,phone,name,portrait  FROM `user`
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+
+    <select id="selectByUser" parameterType="java.lang.Integer" resultMap="BaseResult">
+       SELECT u.id,u.phone,u.name,u.status,u.portrait,ass.name as add_name,ass.detailed,ass.reg_id as regId
+       FROM `user` as u,address as ass
+       where u.id=ass.u_id and u.id = #{id,jdbcType=INTEGER}
+    </select>
+
+
+    <sql id="findPageWithWhere">
+        <where>1=1
+            <if test="id != null">
+                and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="phone != null">
+                and phone = #{phone,jdbcType=CHAR}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name,jdbcType=VARCHAR}
+            </if>
+            <if test="password != null and password != ''">
+                and pwd = #{password,jdbcType=VARCHAR}
+            </if>
+            <if test="portrait != null and portrait != ''">
+                and portrait = #{portrait,jdbcType=VARCHAR}
+            </if>
+            <if test="type != null">
+                and type = #{type,jdbcType=INTEGER}
+            </if>
+            <if test="status != null">
+                and status = #{type,jdbcType=INTEGER}
+            </if>
+            <if test="leaveAmount != null">
+                and leave_amount = #{leaveAmount,jdbcType=DECIMAL}
+            </if>
+        </where>
+    </sql>
+
+
+    <select id="findPageWithResult" parameterType="com.hhj.shop.dto.PageDTO" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where 1=1
+        <if test="keywords != null and keywords != ''">and name like #{keywords}</if>
+        limit #{page},#{limit}
+    </select>
+
+
+    <select id="findPageWithCount" parameterType="com.hhj.shop.dto.PageDTO" resultType="Integer">
+        select count(1)
+        from user
+        where 1=1
+        <if test="keywords != null and keywords != ''">and name like #{keywords}</if>
+    </select>
+
+    <select id="findByPhone" parameterType="com.hhj.shop.entity.User" resultType="com.hhj.shop.entity.User">
+		select *
+		from user
+		where phone = #{phone,jdbcType=VARCHAR}
+	</select>
+
+    <select id="findByPhoneWithCount" parameterType="com.hhj.shop.entity.User" resultType="java.lang.Integer">
+		select count(1)
+		from user
+		where phone = #{phone,jdbcType=VARCHAR}
+	</select>
+
+</mapper>

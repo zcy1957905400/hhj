@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhj.shop.repository.GoodsRepository">
+
+	<resultMap id="BaseResultMap" type="com.hhj.shop.entity.Goods">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="g_name" jdbcType="VARCHAR" property="goodName" />
+		<result column="inventory" jdbcType="INTEGER" property="inventory" />
+		<result column="price" jdbcType="DECIMAL" property="price" />
+		<result column="photos" jdbcType="VARCHAR" property="photos" />
+		<result column="particulars" jdbcType="VARCHAR" property="particulars" />
+		<result column="sales" jdbcType="INTEGER" property="sales" />
+		<result column="carousel" jdbcType="INTEGER" property="carousel" />
+		<result column="cls_id" jdbcType="INTEGER" property="clsId" />
+		<result column="spec" jdbcType="VARCHAR" property="spec" />
+		<result column="type" jdbcType="INTEGER" property="type" />
+		<result column="createtime" jdbcType="VARCHAR" property="createtime" />
+		<result column="shopcartnumber" jdbcType="INTEGER" property="number" />
+
+		<collection property="orderGList" ofType="com.hhj.shop.entity.OrderG">
+			<id  column="ogid" property="id"/>
+			<result  column="o_id" property="oId"/>
+			<result  column="g_id" property="gId"/>
+			<result  column="number" property="number"/>
+		</collection>
+	</resultMap>
+
+
+	<sql id="Base_Column_List">
+		id, g_name, inventory, price, photos, particulars, sales, carousel, cls_id, spec,
+		type, createtime
+	</sql>
+
+
+	<delete id="delete" parameterType="java.lang.Integer">
+		delete from goods
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+
+
+	<insert id="insert" parameterType="com.hhj.shop.entity.Goods">
+		insert into goods (g_name, inventory,
+		price, photos, particulars,
+		sales, carousel, cls_id,
+		spec, type, createtime
+		)
+		values (#{goodName,jdbcType=VARCHAR}, #{inventory,jdbcType=INTEGER},
+		#{price,jdbcType=DECIMAL}, #{photos,jdbcType=VARCHAR}, #{particulars,jdbcType=VARCHAR},
+		#{sales,jdbcType=INTEGER}, #{carousel,jdbcType=INTEGER}, #{clsId,jdbcType=INTEGER},
+		#{spec,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{createtime,jdbcType=VARCHAR}
+		)
+	</insert>
+
+
+	<insert id="insertDynamic" parameterType="com.hhj.shop.entity.Goods">
+		insert into goods
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="goodName != null">
+				g_name,
+			</if>
+			<if test="inventory != null">
+				inventory,
+			</if>
+			<if test="price != null">
+				price,
+			</if>
+			<if test="photos != null">
+				photos,
+			</if>
+			<if test="particulars != null">
+				particulars,
+			</if>
+			<if test="sales != null">
+				sales,
+			</if>
+			<if test="carousel != null">
+				carousel,
+			</if>
+			<if test="clsId != null">
+				cls_id,
+			</if>
+			<if test="spec != null">
+				spec,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="createtime != null">
+				createtime,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="goodName != null">
+				#{goodName,jdbcType=VARCHAR},
+			</if>
+			<if test="inventory != null">
+				#{inventory,jdbcType=INTEGER},
+			</if>
+			<if test="price != null">
+				#{price,jdbcType=DECIMAL},
+			</if>
+			<if test="photos != null">
+				#{photos,jdbcType=VARCHAR},
+			</if>
+			<if test="particulars != null">
+				#{particulars,jdbcType=VARCHAR},
+			</if>
+			<if test="sales != null">
+				#{sales,jdbcType=INTEGER},
+			</if>
+			<if test="carousel != null">
+				#{carousel,jdbcType=INTEGER},
+			</if>
+			<if test="clsId != null">
+				#{clsId,jdbcType=INTEGER},
+			</if>
+			<if test="spec != null">
+				#{spec,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=INTEGER},
+			</if>
+			<if test="createtime != null">
+				#{createtime,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+
+	<update id="updateDynamic" parameterType="com.hhj.shop.entity.Goods">
+		update goods
+		<set>
+			<if test="goodName != null">
+				g_name = #{goodName,jdbcType=VARCHAR},
+			</if>
+			<if test="inventory != null">
+				inventory = #{inventory,jdbcType=INTEGER},
+			</if>
+			<if test="price != null">
+				price = #{price,jdbcType=DECIMAL},
+			</if>
+			<if test="photos != null">
+				photos = #{photos,jdbcType=VARCHAR},
+			</if>
+			<if test="particulars != null">
+				particulars = #{particulars,jdbcType=VARCHAR},
+			</if>
+			<if test="sales != null">
+				sales = #{sales,jdbcType=INTEGER},
+			</if>
+			<if test="carousel != null">
+				carousel = #{carousel,jdbcType=INTEGER},
+			</if>
+			<if test="clsId != null">
+				cls_id = #{clsId,jdbcType=INTEGER},
+			</if>
+			<if test="spec != null">
+				spec = #{spec,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				type = #{type,jdbcType=INTEGER},
+			</if>
+			<if test="createtime != null">
+				createtime = #{createtime,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<select id="selectDataList" parameterType="com.hhj.shop.entity.Goods" resultType="com.hhj.shop.entity.Goods">
+		select * from goods where id in (
+		<foreach collection="goodsList" item="item" index="index"
+				 separator=",">
+			#{item.id}
+		</foreach>
+		)
+	</select>
+
+
+	<update id="updateDynamic1" parameterType="com.hhj.shop.entity.Goods">
+		update goods
+		<trim prefix="set" suffixOverrides=",">
+			<trim prefix="inventory =case" suffix="end,">
+				<foreach collection="goodsList" item="item" index="index">
+					<if test="item.inventory != null">
+						when id=#{item.id} then #{item.inventory}
+					</if>
+				</foreach>
+			</trim>
+
+			<trim prefix="sales =case" suffix="end,">
+				<foreach collection="goodsList" item="item" index="index">
+					<if test="item.sales != null">
+						when id=#{item.id} then #{item.sales}
+					</if>
+				</foreach>
+			</trim>
+		</trim>
+		where id in
+		<foreach collection="goodsList" index="index" item="item" separator="," open="(" close=")">
+			#{item.id,jdbcType=INTEGER}
+		</foreach>
+	</update>
+
+
+	<update id="update" parameterType="com.hhj.shop.entity.Goods">
+		update goods
+		set g_name = #{goodName,jdbcType=VARCHAR},
+		inventory = #{inventory,jdbcType=INTEGER},
+		price = #{price,jdbcType=DECIMAL},
+		photos = #{photos,jdbcType=VARCHAR},
+		particulars = #{particulars,jdbcType=VARCHAR},
+		carousel = #{carousel,jdbcType=INTEGER},
+		cls_id = #{clsId,jdbcType=INTEGER},
+		spec = #{spec,jdbcType=VARCHAR},
+		type = #{type,jdbcType=INTEGER}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+
+	<select id="findById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from  goods
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<select id="findCarousel" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		id,photos
+		from  goods
+		where carousel=1 and type=1
+		order by id desc
+		limit 0,4
+	</select>
+
+
+	<sql id="findPageWithWhere">
+		<where> 1=1
+			<if test="id != null" >
+				and id = #{id,jdbcType=INTEGER}
+			</if>
+			<if test="goodName != null and goodName != ''" >
+				and g_name = #{goodName,jdbcType=VARCHAR}
+			</if>
+			<if test="inventory != null" >
+				and inventory = #{inventory,jdbcType=INTEGER}
+			</if>
+			<if test="price != null" >
+				and price = #{price,jdbcType=DECIMAL}
+			</if>
+			<if test="photos != null and photos != ''" >
+				and photos = #{photos,jdbcType=VARCHAR}
+			</if>
+			<if test="particulars != null and particulars != ''" >
+				and particulars = #{particulars,jdbcType=VARCHAR}
+			</if>
+			<if test="sales != null" >
+				and sales = #{sales,jdbcType=INTEGER}
+			</if>
+			<if test="carousel != null" >
+				and carousel = #{carousel,jdbcType=INTEGER}
+			</if>
+			<if test="clsId != null" >
+				and cls_id = #{clsId,jdbcType=INTEGER}
+			</if>
+			<if test="spec != null and spec != ''" >
+				and spec = #{spec,jdbcType=VARCHAR}
+			</if>
+			<if test="type != null" >
+				and type = #{type,jdbcType=INTEGER}
+			</if>
+			<if test="createtime != null and createtime != ''" >
+				and createtime = #{createtime,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</sql>
+
+    <select id="findPageWithResult" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from  goods
+        where 1=1
+		<if test="status == 1"> and type = #{status} </if>
+        <if test="keywords != null and keywords != ''"> and g_name like #{keywords} </if>
+        <if test="startTime != null and startTime != '' and endTime != null and endTime != ''">and createtime BETWEEN #{startTime} AND #{endTime}</if>
+        limit #{page},#{limit}
+    </select>
+
+	<select id="findWithResult" resultMap="BaseResultMap">
+		select goods.*,number as shopcartnumber
+		from  goods,shopcart,member
+		where 1=1
+		and shopcart.m_id=member.id and shopcart.g_id=goods.id and goods.type=1
+		<if test="mid != null and mid != ''"> and shopcart.m_id = #{mid} </if>
+
+	</select>
+
+    <select id="findGoodsWithClassify" resultMap="BaseResultMap">
+        select *
+        from  goods
+        where 1=1 and type=1
+		<if test="clsId != null and clsId != ''"> and cls_id = #{clsId} </if>
+    </select>
+
+
+
+	<!--<select id="findPageWithResult" parameterType="com.hhj.shop.dto.PageDTO" resultMap="BaseResultMap">-->
+		<!--select-->
+		<!--<include refid="Base_Column_List" />-->
+		<!--from  goods-->
+		<!--<include refid="findPageWithWhere" />-->
+		<!--limit #{page},#{limit}-->
+	<!--</select>-->
+
+
+	<select id="findPageWithCount" resultType="Integer">
+		select count(1)
+		from goods
+		where 1=1
+		<if test="keywords != null and keywords != ''"> and g_name like #{keywords} </if>
+		<if test="startTime != null and startTime != '' and endTime != null and endTime != ''">and createtime BETWEEN #{startTime} AND #{endTime}</if>
+	</select>
+
+	<select id="findWithCount" resultType="Integer">
+		select count(1)
+		from goods
+		where type=1
+	</select>
+
+
+	<insert id="batchInsert" parameterType="java.util.List" >
+		replace into goods(
+		g_name, inventory,
+		price, photos, particulars,
+		sales, carousel, cls_id,
+		spec, type, createtime)
+		values
+		<foreach collection="goodsList"  separator="," item="goods" index="i">
+			(
+			#{goods.goodName},
+			#{goods.inventory},
+			#{goods.price},
+			#{goods.photos},
+			#{goods.particulars},
+			#{goods.sales},
+			#{goods.carousel},
+			#{goods.clsId},
+			#{goods.spec},
+			#{goods.type},
+			#{goods.createtime}
+			)
+		</foreach>
+	</insert>
+
+	<update id="batchUpdate" parameterType="java.util.List">
+		update goods
+		<trim prefix="set" suffixOverrides=",">
+			<trim prefix="type =case" suffix="end,">
+				<foreach collection="goodsList" item="item" index="index">
+					<if test="item.type != null">
+						when id=#{item.id} then #{item.type}
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="carousel =case" suffix="end,">
+				<foreach collection="goodsList" item="item" index="index">
+					<if test="item.carousel != null">
+						when id=#{item.id} then #{item.carousel}
+					</if>
+				</foreach>
+			</trim>
+
+		</trim>
+		where id in
+		<foreach collection="goodsList" index="index" item="item" separator="," open="(" close=")">
+            #{item.id,jdbcType=INTEGER}
+		</foreach>
+	</update>
+
+</mapper>

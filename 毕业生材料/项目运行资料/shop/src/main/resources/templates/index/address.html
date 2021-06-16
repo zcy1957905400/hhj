@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <base th:href="@{/}">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes"/>
+    <title>选择自提点</title>
+
+    <link href="css/bootstrap.css" th:href="@{static/index/css/bootstrap.css}" rel="stylesheet" type="text/css"/>
+    <link href="css/home.css" th:href="@{static/index/css/home.css}" rel="stylesheet" type="text/css"/>
+
+    <link href="http://at.alicdn.com/t/font_u5tafk2orz281tt9.css" rel="stylesheet" type="text/css"/>
+
+
+</head>
+
+<body>
+
+<!--top-->
+<div class="top_c">
+    <a href="javascript:history.back(-1);" class="iconfont icon-jiantou-copy-copy"></a>
+    <a href="/shop/index/add_add" class="ming">添加</a>
+    <p class="titi">自提地址</p>
+</div>
+
+<!--内容-->
+<div class="addr">
+    <div class="container">
+        <div class="add">
+            <p>当前自提点</p>
+            <p>
+                <img src="images/bj.jpg" th:src="@{static/index/images/zw.jpg}" height="60px" width="60px" id="d_img"
+                     alt="暂无当前自提点"/>
+                <span style="margin-left: 10px;"><B id="add_name"></B></span>
+            </p>
+            <span id="add_detailed" style="font-size: 16px;"></span>
+        </div>
+
+
+    </div>
+    <div class="product1">
+        <div class="add" style="height: 30px">
+            <p>历史自提点</p>
+        </div>
+        <div id="add2">
+            <!--<div class="add">-->
+                <!--<p style="background:linear-gradient(to left,#FFFFFF,#b6b6b6,#FFFFFF);height:1px;"/>-->
+                <!--<p>-->
+                    <!--<img src="images/bj.jpg" height="60px" width="60px"/>-->
+                    <!--<span style="margin-left: 10px;">湖南省长沙市 <button class="btn btn-danger btn-xs" style="float: right">进店</button></span>-->
+                <!--</p>-->
+                <!--<span>地址：湖南信息学院</span>-->
+            <!--</div>-->
+            <!--<div class="add">-->
+                <!--<p style="background:linear-gradient(to left,#FFFFFF,#b6b6b6,#FFFFFF);height:1px;"/>-->
+                <!--<p>-->
+                    <!--<img src="images/bj.jpg" height="60px" width="60px"/>-->
+                    <!--<span style="margin-left: 10px;">山东省济南市 <button class="btn btn-danger btn-xs" style="float: right">进店</button></span>-->
+                <!--</p>-->
+                <!--<span>地址：山东省济南市天桥区历山北路黄台电子商务产业园16楼</span>-->
+            <!--</div>-->
+            <!--<div class="add">-->
+                <!--<p style="background:linear-gradient(to left,#FFFFFF,#b6b6b6,#FFFFFF);height:1px;"/>-->
+                <!--<p>-->
+                    <!--<img src="images/bj.jpg" height="60px" width="60px"/>-->
+                    <!--<span style="margin-left: 10px;">山东省济南市 <button class="btn btn-danger btn-xs" style="float: right">进店</button></span>-->
+                <!--</p>-->
+                <!--<span>地址：山东省济南市天桥区历山北路黄台电子商务产业园16楼</span>-->
+            <!--</div>-->
+            <!--<div class="add">-->
+                <!--<p style="background:linear-gradient(to left,#FFFFFF,#b6b6b6,#FFFFFF);height:1px;"/>-->
+                <!--<p>-->
+                    <!--<img src="images/bj.jpg" height="60px" width="60px"/>-->
+                    <!--<span style="margin-left: 10px;">山东省济南市 <button class="btn btn-danger btn-xs" style="float: right">进店</button></span>-->
+                <!--</p>-->
+                <!--<span>地址：山东省济南市天桥区历山北路黄台电子商务产业园16楼</span>-->
+            <!--</div>-->
+            <!--<div class="add">-->
+                <!--<p style="background:linear-gradient(to left,#FFFFFF,#b6b6b6,#FFFFFF);height:1px;"/>-->
+                <!--<p>-->
+                    <!--<img src="images/bj.jpg" height="60px" width="60px"/>-->
+                    <!--<span style="margin-left: 10px;">山东省济南市 <button class="btn btn-danger btn-xs" style="float: right">进店</button></span>-->
+                <!--</p>-->
+                <!--<span>地址：山东省济南市天桥区历山北路黄台电子商务产业园16楼</span>-->
+            <!--</div>-->
+        </div>
+    </div>
+</div>
+
+
+<script src="js/jquery.min.js" th:src="@{static/index/js/jquery.min.js}" type="text/javascript"></script>
+<script>
+    var mid = sessionStorage.getItem('mid');
+    var token = sessionStorage.getItem('token');
+    var updateid = {
+        "mId": mid
+    };
+    $.ajax({
+        url: '/shop/history/findByHistory',
+        headers: {
+            "token": token,
+            "Access-Control-Allow-Origin": "*"
+        },
+        type: "get",
+        data: updateid,
+        success: function (resp) {
+            console.log(resp.code);
+            if (resp.code == 0) {
+                $("#add2").empty();
+                var html = '';
+                $.each(resp.data, function (commentIndex, comment) {
+                    if (comment.his_status == 1) {
+                        $("#d_img").attr('src', comment.portrait);
+                        $("#add_name").text(comment.add_name);
+                        $("#add_detailed").text("地址："+comment.add_detailed);
+                    } else {
+                        //$("#add1").empty();
+                        if (comment.add_status == 1) {
+                            html += ' <div class="add">\n' +
+                                '                <p style="background:linear-gradient(to left,#FFFFFF,#b6b6b6,#FFFFFF);height:1px;"/>\n' +
+                                '                <p>\n' +
+                                '                    <img src="' + comment.portrait + '" height="60px" width="60px"/>\n' +
+                                '                    <span style="margin-left: 10px;">' + comment.add_name + ' <button class="btn btn-danger btn-xs" style="float: right" onclick="batch_update(' + comment.hisId + ')">进店</button></span>\n' +
+                                '                </p>\n' +
+                                '                <span style="font-size: 16px;">地址：' + comment.add_detailed + '</span>\n' +
+                                '            </div>';
+                        } else {
+                            html += ' <div class="add">\n' +
+                                '                <p style="background:linear-gradient(to left,#FFFFFF,#b6b6b6,#FFFFFF);height:1px;"/>\n' +
+                                '                <p>\n' +
+                                '                    <img src="' + comment.portrait + '" height="60px" width="60px"/>\n' +
+                                '                    <span style="margin-left: 10px;">' + comment.add_name + '</span>\n' +
+                                '                </p>\n' +
+                                '                <span style="font-size: 16px;">地址：' + comment.add_detailed + '</span>\n' +
+                                '            </div>';
+                        }
+
+                    }
+
+                });
+                $("#add2").html(html);
+            }
+        }
+    });
+
+    function batch_update(hisId) {
+        var msg = "您真的确定要切换吗？";
+        if (confirm(msg) == true) {
+            his_add_uodate(mid, hisId);
+        } else {
+            return false;
+        }
+    }
+
+    //his_add_uodate(1002, 1004);
+
+    function his_add_uodate(mid1, hisId) {
+        var updateid = {
+            "id": hisId,
+            "mId": mid1,
+        };
+        $.ajax({
+            url: '/shop/history/batchUpdate',
+            headers: {
+                "token": token,
+                "Access-Control-Allow-Origin": "*"
+            },
+            type: "post",
+            data: JSON.stringify(updateid),
+            contentType: 'application/json',
+            success: function (resp) {
+                console.log(resp.toString());
+                window.location.reload() ; //刷新页面
+            }
+        });
+    }
+
+</script>
+<script src="js/bootstrap.min.js" th:src="@{static/index/js/bootstrap.min.js}" type="text/javascript"></script>
+<script src="js/index.js" th:src="@{static/index/js/index.js}" type="text/javascript"></script>
+
+</body>
+</html>

@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhj.shop.repository.AddressRepository">
+
+	<resultMap id="BaseResultMap" type="com.hhj.shop.entity.Address">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="aname" jdbcType="VARCHAR" property="name" />
+		<result column="reg_id" jdbcType="INTEGER" property="regId" />
+		<result column="u_id" jdbcType="INTEGER" property="userId" />
+		<result column="type" jdbcType="INTEGER" property="type" />
+		<result column="detailed" jdbcType="VARCHAR" property="detailed" />
+		<collection property="regionList" ofType="com.hhj.shop.entity.Region">
+			<id  column="rid" property="id"/>
+			<result  column="regname" property="name"/>
+		</collection>
+		<collection property="userList" ofType="com.hhj.shop.entity.User">
+			<id  column="uid" property="id"/>
+			<result  column="uname" property="name"/>
+			<result  column="portrait" property="portrait"/>
+		</collection>
+	</resultMap>
+
+
+	<sql id="Base_Column_List">
+		id, name, reg_id, u_id, type,detailed
+	</sql>
+
+
+	<delete id="delete" parameterType="java.lang.Integer">
+		delete from address
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+
+
+	<insert id="insert" parameterType="com.hhj.shop.entity.Address">
+		insert into address (name, reg_id,
+		u_id, type,detailed)
+		values (#{name,jdbcType=VARCHAR}, #{regId,jdbcType=INTEGER},
+		#{userId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER},#{detailed,jdbcType=VARCHAR})
+	</insert>
+
+
+	<insert id="insertDynamic" parameterType="com.hhj.shop.entity.Address">
+		insert into address
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="regId != null">
+				reg_id,
+			</if>
+			<if test="userId != null">
+				u_id,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="detailed != null">
+				detailed,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="regId != null">
+				#{regId,jdbcType=INTEGER},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=INTEGER},
+			</if>
+			<if test="detailed != null">
+				#{detailed,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+
+	<update id="updateDynamic" parameterType="com.hhj.shop.entity.Address">
+		update address
+		<set>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="regId != null">
+				reg_id = #{regId,jdbcType=INTEGER},
+			</if>
+			<if test="userId != null">
+				u_id = #{userId,jdbcType=INTEGER},
+			</if>
+			<if test="type != null">
+				type = #{type,jdbcType=INTEGER},
+			</if>
+			<if test="detailed != null">
+				detailed = #{detailed,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+
+	<update id="update" parameterType="com.hhj.shop.entity.Address">
+		update address
+		set name = #{name,jdbcType=VARCHAR},
+		reg_id = #{regId,jdbcType=INTEGER},
+		u_id = #{userId,jdbcType=INTEGER},
+		detailed = #{detailed,jdbcType=VARCHAR},
+		type = #{type,jdbcType=INTEGER}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+    <update id="batchUpdate" parameterType="java.util.List">
+        update address
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="type =case" suffix="end,">
+                <foreach collection="addressList" item="item" index="index">
+                    when id=#{item.id} then #{item.type}
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach collection="addressList" index="index" item="item" separator="," open="(" close=")">
+            #{item.id,jdbcType=INTEGER}
+        </foreach>
+    </update>
+
+
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from  address
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<select id="selectByUId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from  address
+		where u_id = #{userId,jdbcType=INTEGER}
+	</select>
+
+
+	<sql id="findPageWithWhere">
+		<where> 1=1
+			<if test="id != null" >
+				and id = #{id,jdbcType=INTEGER}
+			</if>
+			<if test="name != null and name != ''" >
+				and name = #{name,jdbcType=VARCHAR}
+			</if>
+			<if test="regId != null" >
+				and reg_id = #{regId,jdbcType=INTEGER}
+			</if>
+			<if test="userId != null" >
+				and u_id = #{userId,jdbcType=INTEGER}
+			</if>
+			<if test="name != null and name != ''" >
+				and name = #{name,jdbcType=VARCHAR}
+			</if>
+			<if test="detailed != null" >
+				and detailed = #{detailed,jdbcType=INTEGER}
+			</if>
+		</where>
+	</sql>
+
+
+	<select id="findPageWithResult" parameterType="com.hhj.shop.dto.PageDTO" resultMap="BaseResultMap">
+		select
+        a.id,a.name as aname,reg1.name as regname,a.type,a.detailed,u.name as uname,u.portrait as portrait,u.id as uid
+		from  address as a,region as reg1,user as u
+		where  a.reg_id = reg1.id and a.u_id = u.id
+		<if test="keywords != null and keywords != ''"> and a.name like #{keywords} </if>
+		<if test="limit != null and limit != ''"> limit #{page},#{limit} </if>
+	</select>
+
+
+	<select id="findPageWithCount" parameterType="com.hhj.shop.dto.PageDTO" resultType="Integer">
+		select count(1)
+		from address
+		where 1=1
+		<if test="keywords != null and keywords != ''"> and name like #{keywords} </if>
+	</select>
+
+	<select id="findRegWithCount" resultType="com.hhj.shop.dto.RegDTO">
+		select reg.name as name,count(reg.name) as 'value'
+		from address as a left join region as reg
+		on reg.id=a.reg_id group by reg.name
+	</select>
+
+    <select id="findAddressWithUser" resultMap="BaseResultMap">
+        select id
+        from  address
+        where u_id = #{userId}
+
+    </select>
+
+</mapper>

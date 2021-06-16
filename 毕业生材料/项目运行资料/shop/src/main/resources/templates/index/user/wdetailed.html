@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <base th:href="@{/}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" />
+    <title>提现明细</title>
+
+    <link href="css/bootstrap.css" th:href="@{static/index/css/bootstrap.css}" rel="stylesheet" type="text/css" />
+    <link href="css/home.css" th:href="@{static/index/css/home.css}" rel="stylesheet" type="text/css" />
+<link href="http://at.alicdn.com/t/font_6688xdquixljif6r.css" rel="stylesheet" type="text/css" />
+
+
+</head>
+
+<body>
+
+<!--top-->
+<div class="top_c">
+    <a href="javascript:history.back(-1);" class="iconfont icon-jiantou-copy-copy" ></a>
+    <p class="titi">提现明细</p>
+</div>
+
+
+<div class="xi_m" id="xi_m">
+	<div class="xi_one">
+        <div class="container">
+    		<div class="xi_left">
+            	<p>提现</p>
+                <span>2017-02-20 12:02:46</span>
+            </div>
+            <div class="xi_right">
+            	<p style="color:#246fc0;">-100.00</p>
+                <span>成功</span>
+            </div>
+    	</div>
+    </div>
+    <div class="xi_one">
+        <div class="container">
+    		<div class="xi_left">
+            	<p>提现</p>
+                <span>2017-02-20 12:02:46</span>
+            </div>
+            <div class="xi_right">
+            	<p style="color:#246fc0;">-100.00</p>
+                <span>失败</span>
+            </div>
+    	</div>
+    </div>
+    <div class="xi_one">
+        <div class="container">
+    		<div class="xi_left">
+            	<p>提现</p>
+                <span>2017-02-20 12:02:46</span>
+            </div>
+            <div class="xi_right">
+            	<p style="color:#246fc0;">-100.00</p>
+                <span>成功</span>
+            </div>
+    	</div>
+    </div>
+    <div class="xi_one">
+        <div class="container">
+    		<div class="xi_left">
+            	<p>提现</p>
+                <span>2017-02-20 12:02:46</span>
+            </div>
+            <div class="xi_right">
+            	<p style="color:#246fc0;">-100.00</p>
+                <span>成功</span>
+            </div>
+    	</div>
+    </div>
+    <div class="xi_one">
+        <div class="container">
+    		<div class="xi_left">
+            	<p>提现</p>
+                <span>2017-02-20 12:02:46</span>
+            </div>
+            <div class="xi_right">
+            	<p style="color:#246fc0;">-100.00</p>
+                <span>成功</span>
+            </div>
+    	</div>
+    </div>
+    <div class="xi_one">
+        <div class="container">
+    		<div class="xi_left">
+            	<p>提现</p>
+                <span>2017-02-20 12:02:46</span>
+            </div>
+            <div class="xi_right">
+            	<p style="color:#246fc0;">-100.00</p>
+                <span>失败</span>
+            </div>
+    	</div>
+    </div>	
+</div>
+
+
+
+<script src="js/jquery.min.js" th:src="@{static/index/js/jquery.min.js}" type="text/javascript"></script>
+<script>
+    function getFormatDate3(date){
+        var nowDate = new Date(date);
+        var year = nowDate.getFullYear();
+        var month = nowDate.getMonth() + 1 < 10 ? "0" + (nowDate.getMonth() + 1) : nowDate.getMonth() + 1;
+        var date = nowDate.getDate() < 10 ? "0" + nowDate.getDate() : nowDate.getDate();
+        var hour = nowDate.getHours()< 10 ? "0" + nowDate.getHours() : nowDate.getHours();
+        var minute = nowDate.getMinutes()< 10 ? "0" + nowDate.getMinutes() : nowDate.getMinutes();
+        var second = nowDate.getSeconds()< 10 ? "0" + nowDate.getSeconds() : nowDate.getSeconds();
+        return year + "-" + month + "-" + date+" "+hour+":"+minute+":"+second;
+    }
+    var uId = sessionStorage.getItem('uid');
+    var token = sessionStorage.getItem('token');
+    var html='';
+    $('#xi_m').empty();   //清空xi_m里面的所有内容
+    $.ajax({
+        url: "/shop/withdrawal/findByUId"
+        , headers: {
+            "token": token,
+            "Access-Control-Allow-Origin": "*"
+        }
+        , type: "get"
+        , data: {"uId": [uId]}
+        , contentType: 'application/json'
+        , success: function (data) {
+            $.each(data.data, function(commentIndex, comment){
+                var str='';
+                switch (comment.status){
+                    case 0:
+                        str='待审核';
+                        break;
+                    case 1:
+                        str='成功';
+                        break;
+                    default:
+                        str='审核失败'
+                        break;
+                }
+                html+='<div class="xi_one">\n' +
+                    '        <div class="container">\n' +
+                    '    \t\t<div class="xi_left">\n' +
+                    '            \t<p>提现</p>\n' +
+                    '                <span>'+getFormatDate3(comment.createtime*1000)+'</span>\n' +
+                    '            </div>\n' +
+                    '            <div class="xi_right">\n' +
+                    '            \t<p style="color:#246fc0;">-'+comment.amount+'</p>\n' +
+                    '                <span>'+str+'</span>\n' +
+                    '            </div>\n' +
+                    '    \t</div>\n' +
+                    '    </div>';
+            });
+            $('#xi_m').html(html);
+        }
+
+    });
+
+</script>
+<script src="js/index.js" th:src="@{static/index/js/index.js}" type="text/javascript"></script>
+
+
+
+
+</body>
+</html>
